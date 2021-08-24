@@ -19,23 +19,21 @@ If you have any concern please let me know.
  
 
 ## Environment Setup & Tools
-* JAVA 11
-  - Download from https://openjdk.java.net/install/
-  
-* IDE: Make your choice
-  - IntelliJ (Community Edition)
-  - Eclipse 
-* Git as version control
-* Maven as dependency manager
-  - Download version 3.8.2 (You can use the once you have also)
-* Spring Boot as framework
-* MySql as Database
-  - Workbench, Heidi, etc as clients
-* Layers that we will use:
-  - Controller
-  - Service (Interface + implementation)
-  - Repository (Interfaces (Spring data) and Native Queries)
-* Try lombok (simplifies getters/setters)
-* Swagger for documentation
-  - Usage Example: https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api
-  
++ JAVA 11
+    * Download from https://openjdk.java.net/install/
++ IDE: Make your choice
+    * IntelliJ (Community Edition)
+    * Eclipse 
++ Git as version control
++ Maven as dependency manager
+    * Download version 3.8.2 (You can use the once you have also)
++ Spring Boot as framework
++ MySql as Database
+    * Workbench, Heidi, etc as clients
++ Layers that we will use:
+    * Controller
+    * Service (Interface + implementation)
+    * Repository (Interfaces (Spring data) and Native Queries)
++ Try lombok (simplifies getters/setters)
++ Swagger for documentation
+    * Usage Example: https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api
