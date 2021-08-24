@@ -9,12 +9,14 @@ Decide:
 * How will you pass the parameter? Choose Path Param or Request Param.
 
 Commit in your feature branch & create a Pull Request (Perri for the friends!)
+After approval, we can merge to develop.
 If you have any concern please let me know.
 
 ### Prerequisites
 * Clone develop branch
 * Create a feature branch from develop
-* Create a folder with your namesurname (lucaspaoliello). Put your code there.
+* Create a folder with your namesurname (eg lucaspaoliello) inside challenge package. 
+Put your code there.
 
  
 
