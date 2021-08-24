@@ -4,9 +4,9 @@ This project is for 'Somos Mas' ONG. It's based on a Restful API built with Spri
 ## Challenge
 Create an endpoint: /verify/palindrome that receives a string and checks if it's a palindrome.
 Decide:
-* HTTP verb
-* HTTP status code for response 
-* How will you pass the parameter? Choose Path Param or Request Param.
++ HTTP verb
++ HTTP status code for response 
++ How will you pass the parameter? Choose Path Param or Request Param.
 
 Commit in your feature branch & create a Pull Request (Perri for the friends!)
 After approval, we can merge to develop.
