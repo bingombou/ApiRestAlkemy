@@ -1,4 +1,4 @@
-package com.alkemy.ong.monitor;
+package com.alkemy.ong.web;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
