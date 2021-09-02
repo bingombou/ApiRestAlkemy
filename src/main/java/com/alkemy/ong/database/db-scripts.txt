@@ -1,1 +1,14 @@
 CREATE DATABASE IF NOT EXISTS alkemyongdev;
+
+//Contacts Table
+CREATE TABLE contacts (
+    id BIGINT AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    phone VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    message VARCHAR(50) NOT NULL,
+    deleted BIT(1) NOT NULL,
+    createdAt DATETIME(6) NOT NULL,
+    updatedAt DATETIME(6) NOT NULL,
+    PRIMARY KEY (id)
+);
