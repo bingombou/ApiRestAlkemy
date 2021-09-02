@@ -1,13 +1,8 @@
 package com.alkemy.ong.domain.model;
-
-
 import lombok.Data;
-
 
 @Data
 public class UserModel {
-
-
     private Long idUser;
     private String firstName;
     private String lastName;

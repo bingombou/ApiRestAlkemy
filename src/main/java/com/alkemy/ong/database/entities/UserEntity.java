@@ -24,7 +24,7 @@ public class UserEntity {
     private String firstName;
 
     @NotEmpty(message = "The last name field is required")
-    @Column(name = "lastName",length = 30, nullable = false)
+    @Column(name = "lastName", length = 30, nullable = false)
     private String lastName;
 
     @NotEmpty(message = "The email field is required")
@@ -38,7 +38,7 @@ public class UserEntity {
     @Column(name = "photo", length=30, nullable = true)
     private String photo;
 
-    @Column(name = "deleted",nullable = false)
+    @Column(name = "deleted", nullable = false)
     private boolean deleted = Boolean.FALSE;
 
     @Column(name= "createdAt", nullable=false)
