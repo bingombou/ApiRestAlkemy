@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Entity
@@ -32,18 +33,18 @@ public class UserEntity {
     private String email;
 
     @NotEmpty(message = "The password field is required")
-    @Column(name = "password", length=8, nullable = false)
+    @Column(name = "password", length = 8, nullable = false)
     private String password;
 
-    @Column(name = "photo", length=30, nullable = true)
+    @Column(name = "photo", length = 30, nullable = true)
     private String photo;
 
     @Column(name = "deleted", nullable = false)
     private boolean deleted = Boolean.FALSE;
 
-    @Column(name= "createdAt", nullable=false)
-    private LocalDate createdAt;
+    @Column(name= "createdAt", nullable = false)
+    private Timestamp createdAt;
 
-    @Column(name= "lastModified", nullable=false)
-    private LocalDate lastModified;
+    @Column(name= "updatedAt", nullable = false)
+    private Timestamp updatedAt;
 }
