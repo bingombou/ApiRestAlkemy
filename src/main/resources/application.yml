@@ -7,3 +7,5 @@ spring:
     username: root
     password:
     driver-class: com.mysql.jdbc.Driver
+    hibernate:
+      ddl-auto: update
