@@ -39,3 +39,17 @@ created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 deleted BOOLEAN NOT NULL DEFAULT 0
 );
+
+CREATE TABLE IF NOT EXISTS members (
+    id int NOT NULL,
+    name varchar(30) NOT NULL,
+    facebookUrl varchar(50),
+    instagramUrl varchar(50),
+    linkedinUrl varchar(50),
+    image varchar(20) NOT NULL,
+    description varchar(50) NOT NULL,
+    deleted boolean  NOT NULL,
+    createdAt timestamp  NOT NULL,
+    updatedAt timestamp  NOT NULL,
+    CONSTRAINT PK_MEMBERS PRIMARY KEY (id)
+);
