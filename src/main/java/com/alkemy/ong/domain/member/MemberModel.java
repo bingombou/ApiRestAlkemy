@@ -1,4 +1,4 @@
-package com.alkemy.ong.domain.model;
+package com.alkemy.ong.domain.member;
 
 import org.apache.tomcat.jni.Local;
 

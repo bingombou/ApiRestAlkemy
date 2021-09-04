@@ -1,6 +1,6 @@
-package com.alkemy.ong.domain.services;
+package com.alkemy.ong.domain.member;
 
-import com.alkemy.ong.domain.model.MemberModel;
+import com.alkemy.ong.domain.member.MemberModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

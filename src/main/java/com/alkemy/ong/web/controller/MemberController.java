@@ -1,7 +1,7 @@
-package com.alkemy.ong.web.controllers;
+package com.alkemy.ong.web.controller;
 
-import com.alkemy.ong.domain.model.MemberModel;
-import com.alkemy.ong.domain.services.MemberService;
+import com.alkemy.ong.domain.member.MemberModel;
+import com.alkemy.ong.domain.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
