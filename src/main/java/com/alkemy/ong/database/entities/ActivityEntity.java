@@ -1,6 +1,5 @@
-package com.alkemy.ong.database.entity;
+package com.alkemy.ong.database.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
@@ -8,6 +7,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 @Entity
@@ -15,18 +15,21 @@ import java.util.Date;
 @SQLDelete(sql = "UPDATE activities SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Data
-public class Activity {
+public class ActivityEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotEmpty(message = "This field is required")
     @Column(name = "name", length = 50, nullable = false)
     private String name;
 
+    @NotEmpty(message = "This field is required")
     @Column(name = "content", length = 256, nullable = false)
     private String content;
 
+    @NotEmpty(message = "This field is required")
     @Column(name = "image", length = 256, nullable = false)
     private String image;
 
