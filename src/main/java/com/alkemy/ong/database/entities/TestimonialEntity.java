@@ -1,6 +1,8 @@
 package com.alkemy.ong.database.entities;
 
 import lombok.Data;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -8,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "testimonials")
-public class Testimonial {
+public class TestimonialEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,10 +29,14 @@ public class Testimonial {
     @Column (name = "deleted", length = 1)
     private int deleted;
 
-    @Column (name = "createdAt", length = 30)
+    @Generated( value = GenerationTime.ALWAYS)
+    @Column (name = "created_at", length = 30, nullable = false, insertable = false,
+            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
-    @Column (name = "updatedAt", length = 30)
+    @Generated( value = GenerationTime.ALWAYS)
+    @Column (name = "updated_at", length = 30, nullable = false, insertable = false,
+            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime updatedAt;
 
 }
