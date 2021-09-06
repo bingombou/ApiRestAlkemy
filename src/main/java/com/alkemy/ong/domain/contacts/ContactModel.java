@@ -1,9 +1,8 @@
-package com.alkemy.ong.domain.models;
+package com.alkemy.ong.domain.contacts;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 public class ContactModel {
@@ -13,7 +12,7 @@ public class ContactModel {
     private String email;
     private String message;
     private boolean deleted;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
 

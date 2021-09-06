@@ -1,6 +1,5 @@
 CREATE DATABASE IF NOT EXISTS alkemyongdev;
 
-
 //Contacts Table
 CREATE TABLE contacts (
     id BIGINT AUTO_INCREMENT,
@@ -12,7 +11,6 @@ CREATE TABLE contacts (
     createdAt DATETIME(6) NOT NULL,
     updatedAt DATETIME(6) NOT NULL,
     PRIMARY KEY (id)
-);
 
 USERS TABLE
 
