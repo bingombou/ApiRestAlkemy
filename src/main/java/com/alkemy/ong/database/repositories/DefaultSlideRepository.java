@@ -2,8 +2,8 @@ package com.alkemy.ong.database.repositories;
 
 import com.alkemy.ong.database.entities.SlideEntity;
 import com.alkemy.ong.database.jparepositories.SlideJpaRepository;
-import com.alkemy.ong.domain.slide.SlideModel;
-import com.alkemy.ong.domain.slide.SlideRepository;
+import com.alkemy.ong.domain.slides.SlideModel;
+import com.alkemy.ong.domain.slides.SlideRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.stream.Collectors;

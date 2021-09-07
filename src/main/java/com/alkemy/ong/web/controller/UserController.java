@@ -1,7 +1,7 @@
 package com.alkemy.ong.web.controller;
 
-import com.alkemy.ong.domain.user.UserModel;
-import com.alkemy.ong.domain.user.UserService;
+import com.alkemy.ong.domain.users.UserModel;
+import com.alkemy.ong.domain.users.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

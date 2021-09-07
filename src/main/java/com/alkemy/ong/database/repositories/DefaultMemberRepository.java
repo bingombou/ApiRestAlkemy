@@ -2,8 +2,8 @@ package com.alkemy.ong.database.repositories;
 
 import com.alkemy.ong.database.entities.MemberEntity;
 import com.alkemy.ong.database.jparepositories.MemberJPARepository;
-import com.alkemy.ong.domain.member.MemberModel;
-import com.alkemy.ong.domain.member.MemberRepository;
+import com.alkemy.ong.domain.members.MemberModel;
+import com.alkemy.ong.domain.members.MemberRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
