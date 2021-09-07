@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface NewsService {
 
-    public List<NewsEntity> getNews();
+    public List<NewsModel> getNews();
     public NewsEntity createNews(NewsEntity newsEntity);
     public NewsEntity getNewsById(int id);
     public NewsEntity updateNews(NewsEntity newsEntity);

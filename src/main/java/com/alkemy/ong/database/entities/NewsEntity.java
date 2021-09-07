@@ -49,11 +49,11 @@ public class NewsEntity implements Serializable {
     @Column(name = "updated_at", updatable = false, nullable = false, insertable = false,
             columnDefinition = "datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Date updated_at;
-
-    /*@JoinColumn(name = "fk_category", nullable = false)
+/*
+   @JoinColumn(name = "fk_category", nullable = false)
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private Categories categoryId;*/
 
-    @Column(name = "deleted")
+    @Column(name = "deleted", nullable = false)
     private boolean deleted = Boolean.FALSE;
 }

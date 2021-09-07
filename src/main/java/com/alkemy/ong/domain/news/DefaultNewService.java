@@ -14,10 +14,8 @@ public class DefaultNewService implements NewsService {
     }
 
     @Override
-    public List<NewsEntity> getNews() {
-
-
-        return null;
+    public List<NewsModel> getNews() {
+        return newsRepository.findAll();
     }
 
     @Override

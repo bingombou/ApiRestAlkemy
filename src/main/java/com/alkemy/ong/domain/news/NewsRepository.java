@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface NewsRepository  {
 
-    public List<NewsModel> findAll();
-    public NewsModel findById(int id);
+    List<NewsModel> findAll();
+    NewsModel findById(int id);
 
 }
