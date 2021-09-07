@@ -1,15 +1,15 @@
 package com.alkemy.ong.database.entities;
 
-
+import lombok.Data;
 import org.hibernate.annotations.*;
-
 import javax.persistence.*;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
-import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+@Data
 @Entity
 @Table(name = "users")
 @SQLDelete(sql = "UPDATE users SET deleted = true WHERE idUser=?")
@@ -43,8 +43,12 @@ public class UserEntity {
     private boolean deleted = Boolean.FALSE;
 
     @Column(name= "createdAt", nullable = false)
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name= "updatedAt", nullable = false)
-    private Timestamp updatedAt;
+    private LocalDateTime updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_role")
+    private RoleEntity roleId;
 }

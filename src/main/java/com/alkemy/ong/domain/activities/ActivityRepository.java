@@ -1,6 +1,4 @@
-package com.alkemy.ong.domain.models.activities;
-
-import org.springframework.stereotype.Repository;
+package com.alkemy.ong.domain.activities;
 
 public interface ActivityRepository {
 

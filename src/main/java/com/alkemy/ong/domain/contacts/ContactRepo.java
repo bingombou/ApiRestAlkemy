@@ -4,5 +4,5 @@ import java.util.List;
 
 
 public interface ContactRepo {
-    public List<ContactModel> getContacts();
+    List<ContactModel> getContacts();
 }

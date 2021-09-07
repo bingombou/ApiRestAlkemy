@@ -1,4 +1,4 @@
-package com.alkemy.ong.domain.models.activities;
+package com.alkemy.ong.domain.activities;
 
 public interface ActivityService {
 

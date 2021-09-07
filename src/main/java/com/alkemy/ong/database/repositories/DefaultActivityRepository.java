@@ -2,8 +2,8 @@ package com.alkemy.ong.database.repositories;
 
 import com.alkemy.ong.database.entities.ActivityEntity;
 import com.alkemy.ong.database.jparepositories.ActivityJpaRepository;
-import com.alkemy.ong.domain.models.activities.ActivityModel;
-import com.alkemy.ong.domain.models.activities.ActivityRepository;
+import com.alkemy.ong.domain.activities.ActivityModel;
+import com.alkemy.ong.domain.activities.ActivityRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository

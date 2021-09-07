@@ -1,7 +1,7 @@
 package com.alkemy.ong.web.controller;
 
-import com.alkemy.ong.domain.models.activities.ActivityModel;
-import com.alkemy.ong.domain.models.activities.ActivityService;
+import com.alkemy.ong.domain.activities.ActivityModel;
+import com.alkemy.ong.domain.activities.ActivityService;
 import com.alkemy.ong.web.dto.ActivityDto;
 import com.alkemy.ong.web.exceptions.ApiUnprocessedEntity;
 import com.alkemy.ong.web.exceptions.validator.ActivityValidator;

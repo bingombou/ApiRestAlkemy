@@ -1,6 +1,6 @@
 package com.alkemy.ong.web.dto;
 
-import com.alkemy.ong.domain.models.activities.ActivityModel;
+import com.alkemy.ong.domain.activities.ActivityModel;
 import lombok.Data;
 
 @Data

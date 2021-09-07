@@ -3,7 +3,6 @@ package com.alkemy.ong.web;
 import com.alkemy.ong.domain.contacts.ContactModel;
 import com.alkemy.ong.domain.contacts.ContactService;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;

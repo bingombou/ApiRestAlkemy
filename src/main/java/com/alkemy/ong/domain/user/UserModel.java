@@ -1,6 +1,6 @@
-package com.alkemy.ong.domain.models;
+package com.alkemy.ong.domain.user;
 import lombok.Data;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 public class UserModel {
@@ -11,7 +11,7 @@ public class UserModel {
     private String password;
     private String photo;
     private boolean deleted;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
-    private RoleModel idRole;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private Long idRole;
 }
