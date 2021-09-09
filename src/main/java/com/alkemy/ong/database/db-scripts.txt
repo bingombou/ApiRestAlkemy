@@ -43,16 +43,16 @@ deleted BOOLEAN NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS members (
-    id int NOT NULL,
+    id int NOT NULL AUTO_INCREMENT,
     name varchar(30) NOT NULL,
-    facebookUrl varchar(50),
-    instagramUrl varchar(50),
-    linkedinUrl varchar(50),
+    facebook_url varchar(50),
+    instagram_url varchar(50),
+    linkedin_url varchar(50),
     image varchar(20) NOT NULL,
     description varchar(50) NOT NULL,
-    deleted boolean  NOT NULL,
-    createdAt timestamp  NOT NULL,
-    updatedAt timestamp  NOT NULL,
+    deleted boolean NOT NULL,
+    created_at timestamp NOT NULL default current_timestamp,
+    updated_at timestamp NOT NULL default current_timestamp,
     CONSTRAINT PK_MEMBERS PRIMARY KEY (id)
 );
 

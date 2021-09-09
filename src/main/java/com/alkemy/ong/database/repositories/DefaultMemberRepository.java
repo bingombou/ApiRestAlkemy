@@ -24,7 +24,27 @@ public class DefaultMemberRepository implements MemberRepository {
         return members.stream().map(MemberEntity -> toModel(MemberEntity)).collect(Collectors.toList());
     }
 
-    public MemberModel toModel(MemberEntity mm){
+    public MemberModel createMember(MemberModel member){
+        memberRepository.save(this.toEntity(member));
+        return member;
+    }
+
+    private MemberEntity toEntity(MemberModel mm){
+        MemberEntity member = new MemberEntity();
+        member.setId(mm.getId());
+        member.setName(mm.getName());
+        member.setCreatedAt(mm.getCreatedAt());
+        member.setDeleted(mm.isDeleted());
+        member.setDescription(mm.getDescription());
+        member.setFacebookUrl(mm.getFacebookUrl());
+        member.setImage(mm.getImage());
+        member.setInstagramUrl(mm.getInstagramUrl());
+        member.setLinkedinUrl(mm.getLinkedinUrl());
+        member.setUpdatedAt(mm.getUpdatedAt());
+        return member;
+    }
+
+    private MemberModel toModel(MemberEntity mm){
         MemberModel member = new MemberModel();
         member.setId(mm.getId());
         member.setName(mm.getName());
@@ -38,4 +58,5 @@ public class DefaultMemberRepository implements MemberRepository {
         member.setUpdatedAt(mm.getUpdatedAt());
         return member;
     }
+
 }

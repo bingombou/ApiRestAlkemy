@@ -16,4 +16,9 @@ public class DefaultMemberService implements MemberService {
     public List<MemberModel> getMembers(){
         return memberRepository.getMembers();
     }
+
+    public MemberModel createMember(MemberModel member){
+        return memberRepository.createMember(member);
+    }
+
 }

@@ -1,11 +1,12 @@
-package com.alkemy.ong.domain.members;
+package com.alkemy.ong.web.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
 import java.time.LocalDateTime;
 
+@AllArgsConstructor
 @Data
-public class MemberModel {
+public class MemberDto {
 
     private Long id;
     private String name;
@@ -14,7 +15,7 @@ public class MemberModel {
     private String linkedinUrl;
     private String image;
     private String description;
-    private boolean deleted = Boolean.FALSE;
+    private boolean deleted;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
