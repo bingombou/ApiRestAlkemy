@@ -10,6 +10,7 @@ dist/
 
 #IDE files
 ong.iml
+ong-java.iml
 
 # Compiled Java class files
 *.class

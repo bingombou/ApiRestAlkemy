@@ -1,0 +1,3 @@
+INSERT INTO activities ( name, content, image ) VALUES ( 'Cargar informes', 'Cargar informes en la base de datos', 'https://www.pexels.com/es-es/foto/manos-oficina-internet-escritura-7108465/' );
+INSERT INTO activities ( name, content, image ) VALUES ( 'Actualizar informes', 'Actualizar informes en la base de datos', 'https://www.pexels.com/es-es/foto/creatividad-papel-educacion-adentro-9433330/' );
+INSERT INTO activities ( name, content, image ) VALUES ( 'Agregar proyecto', 'Elaborar proyecto', 'https://www.pexels.com/es-es/foto/programar-empresa-emergente-lista-de-pendientes-concepto-7376/' );
