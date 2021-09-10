@@ -9,10 +9,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class DefaultTestimonialRepository implements TestimonialRepo {
 
-    private TestimonialRepository jpaRepo;
+    private TestimonialRepository testimonialRepository;
 
-    public DefaultTestimonialRepository(TestimonialRepository jpaRepo){
-        this.jpaRepo = jpaRepo;
+    public DefaultTestimonialRepository(TestimonialRepository testimonialRepository){
+        this.testimonialRepository = testimonialRepository;
     }
 
     public TestimonialModel convertToModel(TestimonialEntity testimonialEntity){
@@ -40,9 +40,14 @@ public class DefaultTestimonialRepository implements TestimonialRepo {
         testimonialEntity.setCreatedAt(testimonialModel.getCreatedAt());
         testimonialEntity.setUpdatedAt(testimonialModel.getUpdatedAt());
 
-        testimonialEntity = jpaRepo.save(testimonialEntity);
+        testimonialEntity = testimonialRepository.save(testimonialEntity);
 
         testimonialModel = convertToModel(testimonialEntity);
         return testimonialModel;
+    }
+
+    @Override
+    public void deleteByTestimonialId(Long testimonialId) {
+        testimonialRepository.deleteById(testimonialId);
     }
 }

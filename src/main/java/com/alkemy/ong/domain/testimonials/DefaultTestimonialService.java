@@ -15,4 +15,15 @@ public class DefaultTestimonialService implements TestimonialService{
     public TestimonialModel save(TestimonialModel testimonialModel) {
         return testimonialRepo.create(testimonialModel);
     }
+
+    @Override
+    public void deleteById(Long testimonialId) {
+        try {
+            testimonialRepo.deleteByTestimonialId(testimonialId);
+        } catch (RuntimeException e){
+            throw new TestimonialDomainException();
+        }
+    }
+
+
 }
