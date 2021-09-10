@@ -1,7 +1,6 @@
 package com.alkemy.ong.domain.slides;
 
 import com.alkemy.ong.database.repositories.DefaultSlideRepository;
-import com.alkemy.ong.domain.slides.DefaultSlideService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +20,6 @@ class DefaultSlideServiceTest {
     @Test
     void serviceGetDetailsThrowsExceptionWorks() {
         when(repository.getById(10)).thenReturn(null);
-        assertThrows(SlideDomainException.class, () -> service.getDetails(10));
+        assertThrows(SlideDomainException.class, () -> service.getSlide(10));
     }
 }

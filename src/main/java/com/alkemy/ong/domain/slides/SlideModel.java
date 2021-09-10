@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class SlideModel {
     private int id;
-    private int idCategory;
+    private int idOrganization;
     private int order;
     private String text;
     private String imageUrl;

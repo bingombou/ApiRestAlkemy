@@ -1,9 +1,12 @@
 package com.alkemy.ong.database.entities;
 
 import lombok.Getter;
+import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+@Setter
 @Getter
 @Entity
 @Table(name = "Slide")

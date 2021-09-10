@@ -30,6 +30,18 @@ public class DefaultSlideRepository implements SlideRepository {
         );
     }
 
+    private SlideEntity toEntity(SlideModel model) {
+        final SlideEntity slideEntity = new SlideEntity();
+        slideEntity.setId(model.getId());
+        slideEntity.setIdOrganization(model.getIdOrganization());
+        slideEntity.setOrder(model.getOrder());
+        slideEntity.setImageUrl(model.getImageUrl());
+        slideEntity.setText(model.getText());
+        slideEntity.setDeleted(model.isDeleted());
+        slideEntity.setUpdatedAt(model.getUpdatedAt());
+        return slideEntity;
+    }
+
     @Override
     public List<SlideModel> getAll() {
         return repository.findAll().stream().map(s -> toModel(s)).collect(Collectors.toList());
@@ -39,6 +51,11 @@ public class DefaultSlideRepository implements SlideRepository {
     public Optional<SlideModel> getById(int id) {
         final Optional<SlideEntity> entity = repository.findById(id);
         return (entity.isPresent()) ? Optional.of(toModel(entity.get())) : Optional.empty();
+    }
+
+    @Override
+    public SlideModel update(SlideModel slideModel) {
+        return toModel(repository.save(toEntity(slideModel)));
     }
 }
 

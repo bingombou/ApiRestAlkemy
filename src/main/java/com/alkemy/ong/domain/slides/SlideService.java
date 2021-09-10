@@ -4,5 +4,6 @@ import java.util.List;
 
 public interface SlideService {
     List<SlideModel> getAll();
-    SlideModel getDetails(int id);
+    SlideModel getSlide(int id);
+    SlideModel update(SlideModel newSlide);
 }
