@@ -1,5 +1,5 @@
 package com.alkemy.ong.domain.users;
 
-public interface RoleService {
+public interface RoleRepository {
     RoleModel findById(long id);
 }

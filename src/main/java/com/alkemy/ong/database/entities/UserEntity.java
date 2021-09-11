@@ -25,11 +25,11 @@ public class UserEntity {
     private String lastName;
 
     @NotEmpty(message = "The email field is required")
-    @Column(name = "email", length = 20, nullable = false, unique = true)
+    @Column(name = "email", length = 30, nullable = false, unique = true)
     private String email;
 
     @NotEmpty(message = "The password field is required")
-    @Column(name = "password", length = 8, nullable = false)
+    @Column(name = "password", length = 100, nullable = false)
     private String password;
 
     @Column(name = "photo", length = 30, nullable = true)
@@ -47,4 +47,11 @@ public class UserEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_role")
     private RoleEntity roleId;
+
+    public UserEntity(){
+        super();
+        this.deleted = false;
+        this.createdAt = createdAt.now();
+        this.updatedAt = updatedAt.now();
+    }
 }

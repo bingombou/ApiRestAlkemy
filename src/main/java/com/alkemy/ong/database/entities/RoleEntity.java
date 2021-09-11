@@ -3,7 +3,7 @@ package com.alkemy.ong.database.entities;
 import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -23,10 +23,10 @@ public class RoleEntity {
     private String description;
 
     @Column(name= "createdAt", nullable=false)
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name= "updateAt", nullable=false)
-    private Timestamp updateAt;
+    private LocalDateTime updateAt;
 
     @OneToMany(mappedBy = "roleId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserEntity> users;

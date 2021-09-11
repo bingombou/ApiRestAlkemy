@@ -1,14 +1,17 @@
 package com.alkemy.ong.domain.users;
 
-import com.alkemy.ong.database.jparepositories.RoleJpaRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DefaultRoleService implements RoleService {
 
-    private RoleJpaRepository roleJpaRepository;
+    private RoleRepository roleRepository;
 
-    public DefaultRoleService(RoleJpaRepository roleJpaRepository) {
-        this.roleJpaRepository = roleJpaRepository;
+    public DefaultRoleService(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
+
+    public RoleModel findById(long id){
+        return roleRepository.findById(id);
     }
 }
