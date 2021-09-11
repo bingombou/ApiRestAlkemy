@@ -1,7 +1,7 @@
 package com.alkemy.ong.database.repositories;
 
 import com.alkemy.ong.database.entities.CategoriesEntity;
-import com.alkemy.ong.database.jpaRepositories.CategoriesJpaRepo;
+import com.alkemy.ong.database.jparepositories.CategoriesJpaRepo;
 import com.alkemy.ong.domain.categories.CategoriesModel;
 import com.alkemy.ong.domain.categories.CategoriesRepository;
 import org.springframework.stereotype.Repository;
