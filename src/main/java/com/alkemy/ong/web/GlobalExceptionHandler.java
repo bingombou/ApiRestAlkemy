@@ -1,7 +1,8 @@
 package com.alkemy.ong.web;
 
+
+import com.alkemy.ong.domain.exceptions.DomainException;
 import com.alkemy.ong.domain.members.MemberDomainException;
-import com.alkemy.ong.domain.users.DomainException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,5 +50,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> handleMemberException(Exception e){
         return ResponseEntity.notFound().build();
     }
+
 }
 

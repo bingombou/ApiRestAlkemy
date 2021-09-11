@@ -1,14 +1,14 @@
 package com.alkemy.ong.domain.members;
 
 import com.alkemy.ong.database.entities.MemberEntity;
-import com.alkemy.ong.web.dto.MemberDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class DefaultMemberService implements MemberService {
+public
+class DefaultMemberService implements MemberService {
 
     private MemberRepository memberRepository;
 
@@ -24,8 +24,11 @@ public class DefaultMemberService implements MemberService {
         return memberRepository.createMember(member);
     }
 
-    public boolean deleteMember(Long id) {
-        return memberRepository.deleteMember(id);
+    public MemberModel deleteMember(Long id){
+        Optional<MemberEntity> member = memberRepository.findById(id);
+        memberRepository.deleteMember(id);
+        return toModel(member.orElseThrow(MemberDomainException::new));
+
     }
 
     private MemberModel toModel(MemberEntity mm) {
@@ -45,9 +48,6 @@ public class DefaultMemberService implements MemberService {
 
     public MemberModel updateMember(MemberModel member) {
         Optional<MemberEntity> result = memberRepository.findById(member.getId());
-        /*if (result.isEmpty()) {
-            throw new MemberDomainException();
-        }*/
         memberRepository.updateMember(member);
         return toModel(result.orElseThrow(MemberDomainException::new));
     }
