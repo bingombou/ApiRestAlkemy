@@ -17,5 +17,7 @@ public class OrganizationModel {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private boolean deleted = false;
-
+    private String urlFacebook;
+    private String urlLinkedin;
+    private String urlInstagram;
 }

@@ -24,6 +24,13 @@ public class DefaultOrganizationRepository implements OrganizationRepository {
                 .collect(toList());
     }
 
+    @Override
+    public void updateContactInfo(OrganizationModel organizationModel, int id) {
+        if (jpaRepository.findById(id).isPresent()) {
+            jpaRepository.save(toEntity(organizationModel));
+        }
+    }
+
     public OrganizationModel toModel(OrganizationEntity organization) {
         OrganizationModel organizationModel = new OrganizationModel();
         organizationModel.setName(organization.getName());
@@ -35,7 +42,28 @@ public class DefaultOrganizationRepository implements OrganizationRepository {
         organizationModel.setAboutUsText(organization.getAboutUsText());
         organizationModel.setCreatedAt(organization.getCreatedAt());
         organizationModel.setUpdatedAt(organization.getUpdatedAt());
+        organizationModel.setUrlFacebook(organization.getUrlFacebook());
+        organizationModel.setUrlLinkedin(organization.getUrlLinkedin());
+        organizationModel.setUrlInstagram(organization.getUrlInstagram());
         organizationModel.setDeleted(organization.isDeleted());
         return organizationModel;
     }
+
+    public OrganizationEntity toEntity(OrganizationModel organization) {
+        OrganizationEntity organizationEntity = new OrganizationEntity();
+        organizationEntity.setName(organization.getName());
+        organizationEntity.setImage(organization.getImage());
+        organizationEntity.setAddress(organization.getAddress());
+        organizationEntity.setPhone(organization.getPhone());
+        organizationEntity.setEmail(organization.getEmail());
+        organizationEntity.setWelcomeText(organization.getWelcomeText());
+        organizationEntity.setAboutUsText(organization.getAboutUsText());
+        organizationEntity.setUpdatedAt(organization.getUpdatedAt());
+        organizationEntity.setUrlFacebook(organization.getUrlFacebook());
+        organizationEntity.setUrlLinkedin(organization.getUrlLinkedin());
+        organizationEntity.setUrlInstagram(organization.getUrlInstagram());
+        organizationEntity.setDeleted(organization.isDeleted());
+        return organizationEntity;
+    }
 }
+

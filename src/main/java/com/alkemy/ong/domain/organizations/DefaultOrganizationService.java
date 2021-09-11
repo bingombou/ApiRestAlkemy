@@ -17,4 +17,11 @@ public class DefaultOrganizationService implements OrganizationService {
     public List<OrganizationModel> getAllOrganization() {
         return organizationRepository.findAll();
     }
+
+    @Override
+    public void updateUrls(OrganizationModel organizationModel, int id) {
+        organizationRepository.updateContactInfo(organizationModel, id);
+    }
+
+
 }
