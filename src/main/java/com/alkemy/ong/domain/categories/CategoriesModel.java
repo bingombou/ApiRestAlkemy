@@ -2,6 +2,7 @@ package com.alkemy.ong.domain.categories;
 
 import lombok.Data;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 public class CategoriesModel {
@@ -11,6 +12,6 @@ public class CategoriesModel {
     private String description;
     private String image;
     private boolean deleted;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private Date createdAt;
+    private Date updatedAt;
 }

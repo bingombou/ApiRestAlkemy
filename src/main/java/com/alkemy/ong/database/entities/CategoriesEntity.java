@@ -1,12 +1,15 @@
 package com.alkemy.ong.database.entities;
 
 import lombok.Data;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Data
@@ -31,12 +34,18 @@ public class CategoriesEntity {
     @Column(name = "image", length = 45)
     private String image;
 
-    @Column(nullable = false, name="created_at")
-    private LocalDateTime createdAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Generated(value = GenerationTime.INSERT)
+    @Column(name="created_at", updatable = false, nullable = false, insertable = false,
+        columnDefinition = "datetime default CURRENT_TIMESTAMP")
+    private Date createdAt;
 
-    @Column(nullable = false, name="updated_at")
-    private LocalDateTime updatedAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Generated(value = GenerationTime.ALWAYS)
+    @Column(name = "updated_at", updatable = false, nullable = false, insertable = false,
+            columnDefinition = "datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private Date updatedAt;
 
     @Column(nullable = false)
-    private boolean deleted;
+    private boolean deleted = Boolean.FALSE;
 }

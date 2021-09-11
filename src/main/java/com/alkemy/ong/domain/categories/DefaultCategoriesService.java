@@ -1,5 +1,6 @@
 package com.alkemy.ong.domain.categories;
 
+import jdk.jfr.Category;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -15,5 +16,10 @@ public class DefaultCategoriesService implements CategoriesService {
     @Override
     public List<CategoriesModel> getCategories() {
         return categoriesRepository.getCategories();
+    }
+
+    @Override
+    public CategoriesModel postCategory(CategoriesModel category) {
+        return categoriesRepository.postCategories(category);
     }
 }

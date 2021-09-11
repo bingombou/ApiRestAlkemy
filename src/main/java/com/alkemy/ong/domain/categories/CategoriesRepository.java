@@ -5,4 +5,6 @@ import java.util.List;
 public interface CategoriesRepository {
 
     List<CategoriesModel> getCategories();
+
+    CategoriesModel postCategories(CategoriesModel categories);
 }

@@ -1,7 +1,7 @@
 package com.alkemy.ong.database.repositories;
 
 import com.alkemy.ong.database.entities.CategoriesEntity;
-import com.alkemy.ong.database.jparepositories.CategoriesJpaRepo;
+import com.alkemy.ong.database.jpaRepositories.CategoriesJpaRepo;
 import com.alkemy.ong.domain.categories.CategoriesModel;
 import com.alkemy.ong.domain.categories.CategoriesRepository;
 import org.springframework.stereotype.Repository;
@@ -24,16 +24,28 @@ public class DefaultCategoriesRepo implements CategoriesRepository {
         List<CategoriesModel> categories = new ArrayList<>();
         for (CategoriesEntity ce : categoriesJPARepo.findAll()) {
 
-            categoriesModel.setId(ce.getId());
             categoriesModel.setName(ce.getName());
             categoriesModel.setDescription(ce.getDescription());
             categoriesModel.setImage(ce.getImage());
-            categoriesModel.setDeleted(ce.isDeleted());
             categoriesModel.setCreatedAt(ce.getCreatedAt());
             categoriesModel.setUpdatedAt(ce.getUpdatedAt());
 
             categories.add(categoriesModel);
         }
         return categories;
+    }
+
+    @Override
+    public CategoriesModel postCategories(CategoriesModel categories) {
+        categoriesJPARepo.save(this.toEntity(categories));
+        return categories;
+    }
+
+    private CategoriesEntity toEntity(CategoriesModel cm) {
+        CategoriesEntity categoriesEntity = new CategoriesEntity();
+        categoriesEntity.setName(cm.getName());
+        categoriesEntity.setDescription(cm.getDescription());
+        categoriesEntity.setImage(cm.getImage());
+        return categoriesEntity;
     }
 }
