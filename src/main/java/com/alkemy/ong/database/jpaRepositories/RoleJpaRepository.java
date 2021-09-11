@@ -1,4 +1,4 @@
-package com.alkemy.ong.database.jparepositories;
+package com.alkemy.ong.database.jpaRepositories;
 
 import com.alkemy.ong.database.entities.RoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
