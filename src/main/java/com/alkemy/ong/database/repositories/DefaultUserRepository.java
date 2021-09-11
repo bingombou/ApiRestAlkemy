@@ -2,6 +2,7 @@ package com.alkemy.ong.database.repositories;
 
 import com.alkemy.ong.database.entities.RoleEntity;
 import com.alkemy.ong.database.entities.UserEntity;
+
 import com.alkemy.ong.database.jparepositories.RoleJpaRepository;
 import com.alkemy.ong.database.jparepositories.UserJpaRepository;
 import com.alkemy.ong.domain.users.UserModel;
