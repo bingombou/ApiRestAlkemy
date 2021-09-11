@@ -3,9 +3,7 @@ package com.alkemy.ong.web.controller;
 import com.alkemy.ong.domain.organizations.OrganizationModel;
 import com.alkemy.ong.domain.organizations.OrganizationService;
 import lombok.Data;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,29 +24,35 @@ public class OrganizationController {
     }
 
     @GetMapping("/public")
-    public List<OrganizatioDTO> getPublicInfo() {
+    public List<OrganizationDTO> getPublicInfo() {
         return organizationService.getAllOrganization().stream()
                 .map(o -> toDTO(o))
                 .collect(toList());
     }
 
-    private OrganizatioDTO toDTO(OrganizationModel organizationModel) {
-        OrganizatioDTO organizationDTO = new OrganizatioDTO();
+    private OrganizationDTO toDTO(OrganizationModel organizationModel) {
+        OrganizationDTO organizationDTO = new OrganizationDTO();
         organizationDTO.setName(organizationModel.getName());
         organizationDTO.setImage(organizationModel.getImage());
         organizationDTO.setPhone(organizationModel.getPhone());
         organizationDTO.setAddress(organizationModel.getAddress());
+        organizationDTO.setUrlFacebook(organizationModel.getUrlFacebook());
+        organizationDTO.setUrlLinkedin(organizationModel.getUrlLinkedin());
+        organizationDTO.setUrlInstagram(organizationModel.getUrlInstagram());
+
         return organizationDTO;
     }
 
     @Data
-    private class OrganizatioDTO {
+    private class OrganizationDTO {
         public String name;
         public String image;
         public int phone;
         public String address;
+        private String urlFacebook;
+        private String urlLinkedin;
+        private String urlInstagram;
     }
-
 }
 
 

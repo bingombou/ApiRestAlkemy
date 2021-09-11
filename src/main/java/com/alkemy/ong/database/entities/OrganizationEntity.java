@@ -61,4 +61,13 @@ public class OrganizationEntity implements Serializable {
 
     @Column(name = "deleted")
     private boolean deleted = false;
+
+    @Column(name = "urlFacebook")
+    private String urlFacebook;
+
+    @Column(name = "urlLinkedin")
+    private String urlLinkedin;
+
+    @Column(name = "urlInstagram")
+    private String urlInstagram;
 }
