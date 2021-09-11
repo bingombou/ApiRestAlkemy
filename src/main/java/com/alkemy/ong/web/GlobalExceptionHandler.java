@@ -12,8 +12,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?>handleSlideException(Exception e){
         return ResponseEntity.notFound().build();
     }
+
     @ExceptionHandler(value = {TestimonialDomainException.class})
-    public ResponseEntity <?> handleTestimonialException( Exception e ){
+    public ResponseEntity<?> handleTestimonialException(Exception e){
         return ResponseEntity.notFound().build();
     }
 }

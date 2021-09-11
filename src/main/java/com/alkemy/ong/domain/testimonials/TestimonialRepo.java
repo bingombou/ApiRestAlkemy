@@ -4,5 +4,7 @@ public interface TestimonialRepo {
 
     TestimonialModel create(TestimonialModel testimonialModel);
 
+    TestimonialModel updateTestimonial(TestimonialModel testimonialModel, Long testimonialId);
+
     void deleteByTestimonialId(Long testimonialId);
 }

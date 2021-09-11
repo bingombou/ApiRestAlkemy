@@ -17,6 +17,14 @@ public class DefaultTestimonialService implements TestimonialService{
     }
 
     @Override
+    public TestimonialModel update(TestimonialModel testimonialModel, Long testimonialId) {
+        try {
+            return testimonialRepo.updateTestimonial(testimonialModel, testimonialId);
+        } catch (RuntimeException e){
+            throw new TestimonialDomainException();
+        }
+    }
+    @Override
     public void deleteById(Long testimonialId) {
         try {
             testimonialRepo.deleteByTestimonialId(testimonialId);
@@ -24,6 +32,4 @@ public class DefaultTestimonialService implements TestimonialService{
             throw new TestimonialDomainException();
         }
     }
-
-
 }

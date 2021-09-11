@@ -1,18 +1,20 @@
 package com.alkemy.ong.database.repositories;
 
 import com.alkemy.ong.database.entities.TestimonialEntity;
-import com.alkemy.ong.database.jparepositories.TestimonialRepository;
+import com.alkemy.ong.database.jparepositories.TestimonialJpaRepository;
 import com.alkemy.ong.domain.testimonials.TestimonialModel;
 import com.alkemy.ong.domain.testimonials.TestimonialRepo;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public class DefaultTestimonialRepository implements TestimonialRepo {
 
-    private TestimonialRepository testimonialRepository;
+    private TestimonialJpaRepository testimonialJpaRepository;
 
-    public DefaultTestimonialRepository(TestimonialRepository testimonialRepository){
-        this.testimonialRepository = testimonialRepository;
+    public DefaultTestimonialRepository(TestimonialJpaRepository testimonialJpaRepository){
+        this.testimonialJpaRepository = testimonialJpaRepository;
     }
 
     public TestimonialModel convertToModel(TestimonialEntity testimonialEntity){
@@ -29,6 +31,7 @@ public class DefaultTestimonialRepository implements TestimonialRepo {
         return testimonialModel;
     }
 
+    @Override
     public TestimonialModel create(TestimonialModel testimonialModel){
 
         TestimonialEntity testimonialEntity = new TestimonialEntity();
@@ -40,14 +43,34 @@ public class DefaultTestimonialRepository implements TestimonialRepo {
         testimonialEntity.setCreatedAt(testimonialModel.getCreatedAt());
         testimonialEntity.setUpdatedAt(testimonialModel.getUpdatedAt());
 
-        testimonialEntity = testimonialRepository.save(testimonialEntity);
+        testimonialEntity = testimonialJpaRepository.save(testimonialEntity);
 
         testimonialModel = convertToModel(testimonialEntity);
         return testimonialModel;
     }
 
     @Override
+    public TestimonialModel updateTestimonial(TestimonialModel testimonialModel, Long testimonialId) {
+
+        Optional<TestimonialEntity> testimonial = testimonialJpaRepository.findById(testimonialId);
+
+        testimonial.get().setName(testimonialModel.getName());
+        testimonial.get().setImage(testimonialModel.getImage());
+        testimonial.get().setContent(testimonialModel.getContent());
+        testimonial.get().setDeleted(testimonialModel.getDeleted());
+        testimonial.get().setCreatedAt(testimonialModel.getCreatedAt());
+        testimonial.get().setUpdatedAt(testimonialModel.getUpdatedAt());
+
+        testimonialJpaRepository.save(testimonial.get());
+
+        testimonialModel = convertToModel(testimonial.get());
+
+        return testimonialModel;
+    }
+
+
+    @Override
     public void deleteByTestimonialId(Long testimonialId) {
-        testimonialRepository.deleteById(testimonialId);
+        testimonialJpaRepository.deleteById(testimonialId);
     }
 }
