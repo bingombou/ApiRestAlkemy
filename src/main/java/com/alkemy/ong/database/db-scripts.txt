@@ -113,3 +113,13 @@ CREATE TABLE IF NOT EXISTS Slide(idSlide INT NOT NULL AUTO_INCREMENT PRIMARY KEY
     updated_at DATETIME(6),
     PRIMARY KEY (id)
   );
+
+CREATE TABLE IF NOT EXISTS comments (id_comment INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+					id_user BIGINT(20)  NOT NULL,
+					id_news INT NOT NULL,
+					body VARCHAR(140),
+					deleted BOOLEAN NOT NULL DEFAULT FALSE,
+                    created_at timestamp  NOT NULL,
+                    updated_at timestamp  NOT NULL,
+                    FOREIGN KEY (id_user) references users(id_user),
+					FOREIGN KEY (id_news) references news(id));
