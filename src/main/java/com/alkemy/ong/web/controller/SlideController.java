@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,8 +29,14 @@ public class SlideController {
     }
 
     @PutMapping("/slide/{id}")
-    public ResponseEntity<FullSlideDTO> update(@PathVariable("id") @RequestBody SlideModel slide) {
+    public ResponseEntity<FullSlideDTO> update(@PathVariable("id") int id, @RequestBody SlideModel slide) {
         return ResponseEntity.ok(toFullSlideDTO(service.update(slide)));
+    }
+
+    @DeleteMapping("/slide/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     private SlideDTO toDTO(SlideModel slideModel) {
@@ -44,8 +49,7 @@ public class SlideController {
                 slideModel.getIdOrganization(),
                 slideModel.getOrder(),
                 slideModel.getText(),
-                slideModel.getImageUrl()
-        );
+                slideModel.getImageUrl());
     }
 
     @Setter

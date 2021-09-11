@@ -6,5 +6,6 @@ import java.util.Optional;
 public interface SlideRepository {
     List<SlideModel> getAll();
     Optional<SlideModel> getById(int id);
-    SlideModel update(SlideModel slideModel);
+    SlideModel update(SlideModel slide);
+    void delete(SlideModel id);
 }

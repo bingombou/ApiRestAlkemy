@@ -5,6 +5,7 @@ import com.alkemy.ong.database.jparepositories.SlideJpaRepository;
 import com.alkemy.ong.domain.slides.SlideModel;
 import com.alkemy.ong.domain.slides.SlideRepository;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,6 +40,7 @@ public class DefaultSlideRepository implements SlideRepository {
         slideEntity.setText(model.getText());
         slideEntity.setDeleted(model.isDeleted());
         slideEntity.setUpdatedAt(model.getUpdatedAt());
+        slideEntity.setCreatedAt(model.getCreatedAt());
         return slideEntity;
     }
 
@@ -56,6 +58,11 @@ public class DefaultSlideRepository implements SlideRepository {
     @Override
     public SlideModel update(SlideModel slideModel) {
         return toModel(repository.save(toEntity(slideModel)));
+    }
+
+    @Override
+    public void delete(SlideModel slideModel) {
+        repository.delete(toEntity(slideModel));
     }
 }
 
