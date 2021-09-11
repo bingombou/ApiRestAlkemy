@@ -1,7 +1,7 @@
 package com.alkemy.ong.database.repositories;
 
 import com.alkemy.ong.database.entities.UserEntity;
-import com.alkemy.ong.database.jpaRepositories.UserJpaRepository;
+import com.alkemy.ong.database.jparepositories.UserJpaRepository;
 import com.alkemy.ong.domain.users.UserModel;
 import com.alkemy.ong.domain.users.UserRepository;
 import org.springframework.stereotype.Repository;
