@@ -1,7 +1,6 @@
 package com.alkemy.ong.database.entities;
 
 import lombok.Data;
-import org.hibernate.annotations.*;
 import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -12,9 +11,6 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "users")
-@SQLDelete(sql = "UPDATE users SET deleted = true WHERE idUser=?")
-@FilterDef(name = "deletedUserFilter", parameters = @ParamDef(name = "isDeleted", type = "boolean"))
-@Filter(name = "deletedUserFilter", condition = "deleted = :isDeleted")
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,11 +1,12 @@
 package com.alkemy.ong.database.repositories;
 
 import com.alkemy.ong.database.entities.UserEntity;
-import com.alkemy.ong.database.jparepositories.UserJpaRepository;
+import com.alkemy.ong.database.jpaRepositories.UserJpaRepository;
 import com.alkemy.ong.domain.users.UserModel;
 import com.alkemy.ong.domain.users.UserRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -39,4 +40,18 @@ public class DefaultUserRepository implements UserRepository {
 
         return userModel;
     }
+
+    public void deleteUser(long idUser){
+        Optional<UserEntity> user  = userJpaRepository.findById(idUser);
+        user.get().setDeleted(true);
+        userJpaRepository.save(user.get());
+    }
+
+    public Optional<UserModel> getById(long idUser) {
+        Optional<UserEntity> userEntity = userJpaRepository.findById(idUser);
+        return (userEntity.isPresent()) ? Optional.of(toModel(userEntity.get())) : Optional.empty();
+    }
+
+
+
 }
