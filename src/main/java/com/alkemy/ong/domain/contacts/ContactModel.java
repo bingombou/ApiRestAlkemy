@@ -1,7 +1,6 @@
 package com.alkemy.ong.domain.contacts;
 
 import lombok.Data;
-
 import java.time.LocalDateTime;
 
 @Data
@@ -15,4 +14,3 @@ public class ContactModel {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
-
