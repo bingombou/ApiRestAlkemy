@@ -3,32 +3,36 @@ package com.alkemy.ong.web.controller;
 import com.alkemy.ong.domain.activities.ActivityModel;
 import com.alkemy.ong.domain.activities.ActivityService;
 import com.alkemy.ong.web.dto.ActivityDto;
-import com.alkemy.ong.web.exceptions.ApiUnprocessedEntity;
-import com.alkemy.ong.web.exceptions.validator.ActivityValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
+@RequestMapping("/activities")
 public class ActivityController {
 
-    private ActivityService service;
-    private ActivityValidator validator;
+    private ActivityService activityService;
 
-    public ActivityController(ActivityService service, ActivityValidator validator) {
-        this.service = service;
-        this.validator = validator;
+    public ActivityController(ActivityService service) {
+        this.activityService = service;
     }
 
-    @PostMapping("/activities")
-    public ResponseEntity<Object> createActivity(@RequestBody ActivityModel activityModel) throws ApiUnprocessedEntity {
+    @PostMapping()
+    public ResponseEntity<?> createActivity(@Valid @RequestBody ActivityDto activityDto) {
 
-        validator.validateActivity(activityModel);
-        this.service.create(activityModel);
+        ActivityModel activityModel = activityDto.toModel();
+        activityModel = this.activityService.createActivity(activityModel);
 
-        ActivityDto activityDto = new ActivityDto(activityModel);
-        return new ResponseEntity<Object>(activityDto, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(activityDto.toDto(activityModel), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateActivity(@PathVariable("id") Long id, @Valid @RequestBody ActivityDto activityDto) {
+
+        activityDto.setId(id);
+        ActivityModel activityModel = activityService.updateActivity(activityDto.toModel());
+        return new ResponseEntity<>(activityDto.toDto(activityModel), HttpStatus.OK);
     }
 }

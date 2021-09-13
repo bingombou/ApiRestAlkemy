@@ -6,6 +6,8 @@ import com.alkemy.ong.domain.activities.ActivityModel;
 import com.alkemy.ong.domain.activities.ActivityRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public class DefaultActivityRepository implements ActivityRepository {
 
@@ -18,14 +20,37 @@ public class DefaultActivityRepository implements ActivityRepository {
     @Override
     public ActivityModel createActivity(ActivityModel activityModel) {
 
+        ActivityEntity activityEntity = this.createEntity(activityModel);
+        activityEntity = this.activityRepository.save(activityEntity);
+        activityModel.setId(activityEntity.getId());
+        return activityModel;
+    }
+
+    @Override
+    public ActivityModel updateActivity(ActivityModel activityModel) {
+
+        Optional<ActivityEntity> entity = this.activityRepository.findById(activityModel.getId());
+        if (!entity.isPresent()) {
+            return null;
+        }
+        this.activityRepository.save(this.modifyEntity(activityModel, entity));
+        return activityModel;
+    }
+
+    private ActivityEntity createEntity(ActivityModel activityModel) {
         ActivityEntity activityEntity = new ActivityEntity();
         activityEntity.setName(activityModel.getName());
         activityEntity.setContent(activityModel.getContent());
         activityEntity.setImage(activityModel.getImage());
+        return activityEntity;
+    }
 
-        this.activityRepository.save(activityEntity);
+    private ActivityEntity modifyEntity(ActivityModel activityModel, Optional<ActivityEntity> activityEntity) {
 
-        return activityModel;
+        activityEntity.get().setName(activityModel.getName());
+        activityEntity.get().setContent(activityModel.getContent());
+        activityEntity.get().setImage(activityModel.getImage());
+        return activityEntity.get();
     }
 
 }

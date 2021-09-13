@@ -7,7 +7,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -19,17 +19,14 @@ public class ActivityEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @NotEmpty(message = "This field is required")
     @Column(name = "name", length = 50, nullable = false)
     private String name;
 
-    @NotEmpty(message = "This field is required")
     @Column(name = "content", length = 256, nullable = false)
     private String content;
 
-    @NotEmpty(message = "This field is required")
     @Column(name = "image", length = 256, nullable = false)
     private String image;
 

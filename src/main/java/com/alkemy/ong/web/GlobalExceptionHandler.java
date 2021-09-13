@@ -20,11 +20,12 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status,
-            WebRequest request)
-    {
+            WebRequest request) {
+
         Map<String, Object> body = new LinkedHashMap<>();
         // Get all errors
         List<String> errors = ex.getBindingResult().getFieldErrors().stream()
@@ -36,9 +37,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(body, headers, status);
     }
+
     // handling specific exception
     @ExceptionHandler(DomainException.class)
-    public ResponseEntity<?> resourceNotFoundHandling(DomainException exception, WebRequest request){
+    public ResponseEntity<?> resourceNotFoundHandling(DomainException exception, WebRequest request) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", new Date());
         body.put("message", exception.getMessage());

@@ -11,6 +11,7 @@ import com.alkemy.ong.web.dto.UserDto;
 import com.alkemy.ong.web.dto.UserRegisterDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,13 +29,13 @@ public class DefaultUserRepository implements UserRepository {
         this.encoder = encoder;
     }
 
-    public List<UserModel> getUsers(){
+    public List<UserModel> getUsers() {
         return userJpaRepository.findAll().stream()
                 .map(this::toModel)
                 .collect(Collectors.toList());
     }
 
-    public UserModel toModel(UserEntity userEntity){
+    public UserModel toModel(UserEntity userEntity) {
         UserModel userModel = new UserModel();
 
         userModel.setIdUser(userEntity.getIdUser());
@@ -51,8 +52,8 @@ public class DefaultUserRepository implements UserRepository {
         return userModel;
     }
 
-    public void deleteUser(long idUser){
-        Optional<UserEntity> user  = userJpaRepository.findById(idUser);
+    public void deleteUser(long idUser) {
+        Optional<UserEntity> user = userJpaRepository.findById(idUser);
         user.get().setDeleted(true);
         userJpaRepository.save(user.get());
     }
@@ -114,4 +115,5 @@ public class DefaultUserRepository implements UserRepository {
         user.setIdRole(userEntity.getRoleId().getIdRole());
         return user;
     }
+
 }
