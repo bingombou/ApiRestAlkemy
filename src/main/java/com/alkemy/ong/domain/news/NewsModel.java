@@ -3,21 +3,20 @@ package com.alkemy.ong.domain.news;
 
 import lombok.Data;
 
-import java.sql.Timestamp;
-import java.util.Date;
 
+import java.time.LocalDateTime;
 
 @Data
 public class NewsModel {
 
-    private int id;
+    private Long id;
     private String name;
     private String image;
     private String content;
-    private Date createdAt;
-    private Date updatedAt;
-    private String categoryId;
-
+    private boolean deleted = Boolean.FALSE;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    //private String categoryId;
 
 }
 

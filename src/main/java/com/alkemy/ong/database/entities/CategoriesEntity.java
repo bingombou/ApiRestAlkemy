@@ -8,8 +8,9 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -46,6 +47,10 @@ public class CategoriesEntity {
             columnDefinition = "datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Date updatedAt;
 
+
     @Column(nullable = false)
     private boolean deleted = Boolean.FALSE;
+
+    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "categoryId", fetch = FetchType.LAZY)
+    private List<NewsEntity> NewsEntityList= new ArrayList<>();*/
 }

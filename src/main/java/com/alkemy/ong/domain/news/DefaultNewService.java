@@ -7,34 +7,45 @@ import java.util.List;
 
 @Service
 public class DefaultNewService implements NewsService {
+
     private NewsRepository newsRepository;
 
     public DefaultNewService(NewsRepository newsRepository) {
         this.newsRepository = newsRepository;
     }
 
-    @Override
     public List<NewsModel> getNews() {
-        return newsRepository.findAll();
+        return newsRepository.getNews();
+    }
+
+
+    public NewsModel createNews(NewsModel news) {
+        return newsRepository.createNews(news);
+    }
+    private NewsModel toModel(NewsEntity mm){
+        NewsModel news = new NewsModel();
+        news.setId(mm.getId());
+        news.setName(mm.getName());
+        news.setCreatedAt(mm.getCreatedAt());
+        news.setDeleted(mm.isDeleted());
+        news.setContent(mm.getContent());
+        news.setImage(mm.getImage());
+        news.setUpdatedAt(mm.getUpdatedAt());
+        return news;
     }
 
     @Override
-    public NewsEntity createNews(NewsEntity newsEntity) {
+    public NewsModel getNewsById(Long id) {
         return null;
     }
 
     @Override
-    public NewsEntity getNewsById(int id) {
+    public NewsModel updateNews(NewsModel news) {
         return null;
     }
 
     @Override
-    public NewsEntity updateNews(NewsEntity newsEntity) {
-        return null;
-    }
-
-    @Override
-    public void deleteNews(int id) {
+    public void deleteNews(Long id) {
 
     }
 }

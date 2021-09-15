@@ -2,14 +2,12 @@ package com.alkemy.ong.database.entities;
 
 import lombok.Data;
 import org.hibernate.annotations.*;
-import javax.persistence.*;
-import javax.persistence.CascadeType;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.io.Serializable;
-import java.security.Timestamp;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -17,14 +15,12 @@ import java.util.Date;
 @SQLDelete(sql = "UPDATE news SET deleted = true WHERE id =?")
 @FilterDef(name = "deletedNewsFilter", parameters = @ParamDef(name = "isDeleted", type = "boolean"))
 @Filter(name = "deletedProductFilter", condition = "deleted =isDeleted")
-public class NewsEntity implements Serializable {
-
-    private static final long serialVersionUID = -1L;
+public class NewsEntity{
 
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY )
-    private int id;
+    private Long id;
 
     @NotEmpty(message = "Name field is required")
     @Column(name = "name", nullable = false)
@@ -38,21 +34,15 @@ public class NewsEntity implements Serializable {
     @Column(name = "image", nullable = false)
     private String image;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Generated(value = GenerationTime.INSERT)
-    @Column(name = "created_at", updatable = false, nullable = false, insertable = false,
-            columnDefinition = "datetime default CURRENT_TIMESTAMP")
-    private Date created_at;
+    @Generated( value = GenerationTime.ALWAYS)
+    @Column(name = "created_at", nullable = false,
+            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createdAt;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Generated(value = GenerationTime.ALWAYS)
-    @Column(name = "updated_at", updatable = false, nullable = false, insertable = false,
-            columnDefinition = "datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    private Date updated_at;
-/*
-   @JoinColumn(name = "fk_category", nullable = false)
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
-    private Categories categoryId;*/
+    @Generated( value = GenerationTime.ALWAYS)
+    @Column(name = "updated_at", nullable = false,
+            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime updatedAt;
 
     @Column(name = "deleted", nullable = false)
     private boolean deleted = Boolean.FALSE;

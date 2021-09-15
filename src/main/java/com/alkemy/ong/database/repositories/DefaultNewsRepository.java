@@ -4,57 +4,59 @@ import com.alkemy.ong.database.entities.NewsEntity;
 import com.alkemy.ong.database.jparepositories.NewsJPARepository;
 import com.alkemy.ong.domain.news.NewsModel;
 import com.alkemy.ong.domain.news.NewsRepository;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
-
 @Repository
 public class DefaultNewsRepository implements NewsRepository {
 
-    NewsJPARepository jpaRepository;
+    private NewsJPARepository newsRepository;
 
-    public DefaultNewsRepository(NewsJPARepository jpaRepository) {
-        this.jpaRepository = jpaRepository;
+    public DefaultNewsRepository(NewsJPARepository newsRepository) {
+        this.newsRepository = newsRepository;
     }
 
     @Override
-    public List<NewsModel> findAll() {
-        List<NewsEntity> list = jpaRepository.findAll();
-        return list.stream()
+    public List<NewsModel> getNews() {
+        List<NewsEntity> news = newsRepository.findAll();
+        return news.stream()
                 .map(o -> this.toModel(o))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public NewsModel findById(int id) {
-        NewsEntity newsEntity = jpaRepository.findById(id);
+    public Optional<NewsEntity> findById(Long id) {
+        return newsRepository.findById(id);
+    }
+
+
+    public NewsModel createNews(NewsModel news) {
+        newsRepository.save(this.toEntity(news));
+        return news;
+    }
+    private NewsEntity toEntity(NewsModel newsModel) {
+        NewsEntity news = new NewsEntity();
+        news.setId(newsModel.getId());
+        news.setName(newsModel.getName());
+        news.setContent(newsModel.getContent());
+        news.setImage(newsModel.getImage());
+        news.setDeleted(newsModel.isDeleted());
+        news.setCreatedAt(newsModel.getCreatedAt());
+        news.setUpdatedAt(newsModel.getUpdatedAt());
+        return news;
+    }
+
+    private NewsModel toModel(NewsEntity newsEntity) {
         NewsModel newsModel = new NewsModel();
-        newsModel.setId(newsEntity.getId());
         newsModel.setName(newsEntity.getName());
         newsModel.setContent(newsEntity.getContent());
         newsModel.setImage(newsEntity.getImage());
-        newsModel.setCreatedAt(newsEntity.getCreated_at());
-        newsModel.setUpdatedAt(newsEntity.getUpdated_at());
-        return newsModel;
-    }
-
-    public NewsModel toModel(NewsEntity newsEntity) {
-        NewsModel newsModel = new NewsModel();
-        newsModel.setName(newsEntity.getName());
-        newsModel.setContent(newsEntity.getContent());
-        newsModel.setImage(newsEntity.getImage());
 
         return newsModel;
     }
+
 
 }

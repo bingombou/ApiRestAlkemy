@@ -1,15 +1,16 @@
 package com.alkemy.ong.domain.news;
 
 import com.alkemy.ong.database.entities.NewsEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface NewsRepository  {
 
-    List<NewsModel> findAll();
-    NewsModel findById(int id);
+    List<NewsModel> getNews();
+    Optional<NewsEntity> findById(Long id);
+    NewsModel createNews(NewsModel news);
+
 
 }
