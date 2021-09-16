@@ -8,7 +8,8 @@ import lombok.Setter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @RestController
 public class SlideController {
@@ -18,25 +19,36 @@ public class SlideController {
         this.service = service;
     }
 
-    @GetMapping("/slide")
+    @GetMapping("admin/slide")
     public List<SlideDTO> getAllSlides() {
-        return service.getAll().stream().map(s -> toDTO(s)).collect(Collectors.toList());
+        return service.getAll()
+                .stream()
+                .map(this::toDTO).collect(toList());
     }
 
-    @GetMapping("/slide/{id}")
+    @GetMapping("admin/slide/{id}")
     public ResponseEntity<FullSlideDTO> getDetails(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(toFullSlideDTO(service.getSlide(id)));
     }
 
-    @PutMapping("/slide/{id}")
+    @PutMapping("admin/slide/{id}")
     public ResponseEntity<FullSlideDTO> update(@PathVariable("id") int id, @RequestBody SlideModel slide) {
         return ResponseEntity.ok(toFullSlideDTO(service.update(slide)));
     }
 
-    @DeleteMapping("/slide/{id}")
+
+    @DeleteMapping("admin/slide/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("slide/{orgId}")
+    public ResponseEntity<?> getAllByOrgId(@PathVariable("orgId") Integer orgId) {
+        return ResponseEntity.ok(service.getAllByOrgIdOrdered(orgId)
+                .stream()
+                .map(this::toFullSlideDTO)
+                .collect(toList()));
     }
 
     private SlideDTO toDTO(SlideModel slideModel) {

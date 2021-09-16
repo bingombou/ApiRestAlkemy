@@ -7,6 +7,5 @@ public interface SlideService {
     SlideModel getSlide(int id);
     SlideModel update(SlideModel slide);
     void delete(int id);
-
-
+    List<SlideModel> getAllByOrgIdOrdered(int orgId);
 }

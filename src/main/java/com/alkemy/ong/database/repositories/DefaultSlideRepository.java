@@ -5,10 +5,9 @@ import com.alkemy.ong.database.jparepositories.SlideJpaRepository;
 import com.alkemy.ong.domain.slides.SlideModel;
 import com.alkemy.ong.domain.slides.SlideRepository;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import static java.util.stream.Collectors.toList;
 
 @Repository
 public class DefaultSlideRepository implements SlideRepository {
@@ -46,7 +45,10 @@ public class DefaultSlideRepository implements SlideRepository {
 
     @Override
     public List<SlideModel> getAll() {
-        return repository.findAll().stream().map(s -> toModel(s)).collect(Collectors.toList());
+        return repository.findAll()
+                .stream()
+                .map(this::toModel)
+                .collect(toList());
     }
 
     @Override
@@ -63,6 +65,15 @@ public class DefaultSlideRepository implements SlideRepository {
     @Override
     public void delete(SlideModel slideModel) {
         repository.delete(toEntity(slideModel));
+    }
+
+    @Override
+    public List<SlideModel> getAllByOrgId(int orgId) {
+        List<SlideEntity> entities = repository.getAllByIdOrganization(orgId);
+        return entities
+                .stream()
+                .map(this::toModel)
+                .collect(toList());
     }
 }
 

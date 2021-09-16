@@ -8,4 +8,5 @@ public interface SlideRepository {
     Optional<SlideModel> getById(int id);
     SlideModel update(SlideModel slide);
     void delete(SlideModel id);
+    List<SlideModel> getAllByOrgId(int orgId);
 }
