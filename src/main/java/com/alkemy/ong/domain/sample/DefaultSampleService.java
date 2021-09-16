@@ -1,5 +1,6 @@
 package com.alkemy.ong.domain.sample;
 
+import com.alkemy.ong.domain.exceptions.DomainException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +31,6 @@ public class DefaultSampleService implements SampleService {
 
     @Override
     public Sample findById(Long id) {
-        return repository.findById(id);
+        return repository.findById(id).orElseThrow(DomainException::new);
     }
 }

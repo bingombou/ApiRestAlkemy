@@ -1,6 +1,7 @@
 package com.alkemy.ong.domain.sample;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SampleRepository {
     List<Sample> findAll();
@@ -9,5 +10,5 @@ public interface SampleRepository {
 
     Sample update(Sample sample);
 
-    Sample findById(Long id);
+    Optional<Sample> findById(Long id);
 }

@@ -8,6 +8,7 @@ import com.alkemy.ong.domain.sample.SampleRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -38,10 +39,9 @@ public class DefaultSampleRepository implements SampleRepository {
     }
 
     @Override
-    public Sample findById(Long id) {
+    public Optional<Sample> findById(Long id) {
         return jpaRepository.findById(id)
-                .map(this::toModel)
-                .orElseThrow(DomainException::new);
+                .map(this::toModel);
     }
 
     private SampleEntity toEntity(Sample sample) {
