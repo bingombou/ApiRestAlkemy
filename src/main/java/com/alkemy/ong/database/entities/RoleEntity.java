@@ -14,19 +14,17 @@ public class RoleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idRole;
 
-    @NotEmpty(message = "The name field is required")
     @Column(name = "name", length = 15, nullable = false)
     private String name;
 
-    @NotEmpty(message = "The description field is required")
     @Column(name = "description", length = 30, nullable = true)
     private String description;
 
     @Column(name= "createdAt", nullable=false)
     private LocalDateTime createdAt;
 
-    @Column(name= "updateAt", nullable=false)
-    private LocalDateTime updateAt;
+    @Column(name= "updatedAt", nullable=false)
+    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "roleId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserEntity> users;

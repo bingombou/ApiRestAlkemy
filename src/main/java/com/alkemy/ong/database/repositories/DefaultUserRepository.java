@@ -14,14 +14,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
+import static java.util.stream.Collectors.toList;
 @Repository
 public class DefaultUserRepository implements UserRepository {
 
-    private UserJpaRepository userJpaRepository;
-    private RoleJpaRepository roleJpaRepository;
-    PasswordEncoder encoder;
+    private final UserJpaRepository userJpaRepository;
+    private final RoleJpaRepository roleJpaRepository;
+    private final PasswordEncoder encoder;
 
     public DefaultUserRepository(UserJpaRepository userJpaRepository, RoleJpaRepository roleJpaRepository, PasswordEncoder encoder) {
         this.userJpaRepository = userJpaRepository;
@@ -32,12 +31,11 @@ public class DefaultUserRepository implements UserRepository {
     public List<UserModel> getUsers() {
         return userJpaRepository.findAll().stream()
                 .map(this::toModel)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     public UserModel toModel(UserEntity userEntity) {
         UserModel userModel = new UserModel();
-
         userModel.setIdUser(userEntity.getIdUser());
         userModel.setDeleted(userEntity.isDeleted());
         userModel.setCreatedAt(userEntity.getCreatedAt());
@@ -48,7 +46,6 @@ public class DefaultUserRepository implements UserRepository {
         userModel.setPassword(userEntity.getPassword());
         userModel.setPhoto(userEntity.getPhoto());
         userModel.setUpdatedAt(userEntity.getUpdatedAt());
-
         return userModel;
     }
 
@@ -62,9 +59,9 @@ public class DefaultUserRepository implements UserRepository {
         Optional<UserEntity> userEntity = userJpaRepository.findById(idUser);
         return (userEntity.isPresent()) ? Optional.of(toModel(userEntity.get())) : Optional.empty();
     }
+
     public UserDto toDto(UserEntity userEntity){
         UserDto userDto = new UserDto();
-
         userDto.setEmail(userEntity.getEmail());
         userDto.setFirstName(userEntity.getFirstName());
         userDto.setIdRole(userEntity.getRoleId().getIdRole());
@@ -72,23 +69,22 @@ public class DefaultUserRepository implements UserRepository {
         userDto.setPassword(userEntity.getPassword());
         userDto.setPhoto(userEntity.getPhoto());
         userDto.setUpdatedAt(userEntity.getUpdatedAt());
-
         return userDto;
     }
-    public UserDto updateUser(long idUser, UserDto userDto){
-        Optional<UserEntity> oldUser  = userJpaRepository.findById(idUser);
 
-        oldUser.get().setEmail(userDto.getEmail());
-        oldUser.get().setFirstName(userDto.getFirstName());
-        oldUser.get().setLastName(userDto.getLastName());
-        oldUser.get().setPassword(userDto.getPassword());
-        oldUser.get().setPhoto(userDto.getPhoto());
-        oldUser.get().setUpdatedAt(userDto.getUpdatedAt());
-
-        userJpaRepository.save(oldUser.get());
-
-        return toDto(oldUser.get());
+    public UserDto updateUser(UserDto userDto){
+        Optional<UserEntity> oldUser  = userJpaRepository.findById(userDto.getIdUser());
+        UserEntity user = oldUser.get();
+        user.setEmail(userDto.getEmail());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setPassword(userDto.getPassword());
+        user.setPhoto(userDto.getPhoto());
+        user.setUpdatedAt(userDto.getUpdatedAt());
+        userJpaRepository.save(user);
+        return toDto(user);
     }
+
     public boolean findUserByEmail(String email){
         return userJpaRepository.findByEmail(email) != null;
     }
@@ -107,7 +103,6 @@ public class DefaultUserRepository implements UserRepository {
 
     public UserRegisterDto toDtoRegisterUser(UserEntity userEntity){
         UserRegisterDto user = new UserRegisterDto();
-
         user.setFirstName(userEntity.getFirstName());
         user.setLastName(userEntity.getLastName());
         user.setEmail(userEntity.getEmail());

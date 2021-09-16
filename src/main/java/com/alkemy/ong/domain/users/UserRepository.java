@@ -10,6 +10,6 @@ public interface UserRepository {
     UserRegisterDto registerUserAccount(UserRegisterDto userRegisterDto);
     boolean findUserByEmail(String email);
     Optional<UserModel> getById(long idUser);
-    UserDto updateUser(long idUser, UserDto userDto);
+    UserDto updateUser(UserDto userDto);
     void deleteUser(long idUser);
 }

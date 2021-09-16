@@ -9,7 +9,7 @@ import java.util.Optional;
 @Service
 public class DefaultUserService implements UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public DefaultUserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -19,12 +19,12 @@ public class DefaultUserService implements UserService {
         return userRepository.getUsers();
     }
 
-    public UserDto updateUser(long idUser, UserDto userDto) {
-        Optional<UserModel> user = userRepository.getById(idUser);
+    public UserDto updateUser(UserDto userDto) {
+        Optional<UserModel> user = userRepository.getById(userDto.getIdUser());
         if (user.isEmpty()) {
-            throw  new DomainException("User not found with id: " + idUser);
+            throw  new DomainException("User not found with id: " + userDto.getIdUser());
         }
-        return userRepository.updateUser(idUser, userDto);
+        return userRepository.updateUser(userDto);
     }
 
     public UserRegisterDto registerUserAccount(UserRegisterDto user){

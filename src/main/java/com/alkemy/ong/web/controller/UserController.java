@@ -6,8 +6,6 @@ import com.alkemy.ong.web.dto.UserDto;
 import com.alkemy.ong.web.dto.UserRegisterDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
@@ -32,18 +30,18 @@ public class UserController {
         }
         }
     @PatchMapping("/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable("id") Long idUser, @Valid @RequestBody UserDto userDto) {
-        return new ResponseEntity<Object>(userService.updateUser(idUser, userDto), HttpStatus.OK);
+    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long idUser, @Valid @RequestBody UserDto userDto) {
+        return new ResponseEntity<>(userService.updateUser(userDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteUser(@PathVariable("id") Long idUser) {
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Long idUser) {
             userService.deleteUser(idUser);
-            return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/auth/register")
-    public ResponseEntity<Object> registerUserAccount(@Valid @RequestBody UserRegisterDto user){
-        return new ResponseEntity<Object>(userService.registerUserAccount(user), HttpStatus.OK);
+    public ResponseEntity<UserRegisterDto> registerUserAccount(@Valid @RequestBody UserRegisterDto user){
+        return new ResponseEntity<>(userService.registerUserAccount(user), HttpStatus.OK);
     }
 }

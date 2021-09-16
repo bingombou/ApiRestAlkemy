@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 
 @Data
 public class UserDto {
+
+    private Long idUser;
+
     @NotEmpty(message = "Name field is required")
     private String firstName;
 
