@@ -17,4 +17,19 @@ public class DefaultSampleService implements SampleService {
     public List<Sample> findAll() {
         return repository.findAll();
     }
+
+    @Override
+    public Sample create(Sample sample) {
+        return repository.create(sample);
+    }
+
+    @Override
+    public Sample update(Sample sample) {
+        return repository.update(sample);
+    }
+
+    @Override
+    public Sample findById(Long id) {
+        return repository.findById(id);
+    }
 }

@@ -2,6 +2,7 @@ package com.alkemy.ong.database.repositories;
 
 import com.alkemy.ong.database.entities.SampleEntity;
 import com.alkemy.ong.database.jparepositories.SampleJpaRepository;
+import com.alkemy.ong.domain.exceptions.DomainException;
 import com.alkemy.ong.domain.sample.Sample;
 import com.alkemy.ong.domain.sample.SampleRepository;
 import org.springframework.stereotype.Repository;
@@ -24,6 +25,30 @@ public class DefaultSampleRepository implements SampleRepository {
         return jpaRepository.findAll().stream()
                 .map(this::toModel)
                 .collect(toList());
+    }
+
+    @Override
+    public Sample create(Sample sample) {
+        return toModel(jpaRepository.save(toEntity(sample)));
+    }
+
+    @Override
+    public Sample update(Sample sample) {
+        return null;
+    }
+
+    @Override
+    public Sample findById(Long id) {
+        return jpaRepository.findById(id)
+                .map(this::toModel)
+                .orElseThrow(DomainException::new);
+    }
+
+    private SampleEntity toEntity(Sample sample) {
+        SampleEntity sampleEntity = new SampleEntity();
+        sampleEntity.setName(sample.getName());
+        sampleEntity.setDescription(sample.getDescription());
+        return sampleEntity;
     }
 
     private Sample toModel(SampleEntity entity) {
