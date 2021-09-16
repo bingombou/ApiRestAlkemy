@@ -1,9 +1,12 @@
 package com.alkemy.ong.database.entities;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@Data
 @Entity
 @Table(name = "comments")
 public class CommentEntity  implements Serializable {
@@ -26,4 +29,7 @@ public class CommentEntity  implements Serializable {
 
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    @Column(name= "body", nullable = false )
+    private String body;
 }
