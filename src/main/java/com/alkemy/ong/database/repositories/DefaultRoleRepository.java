@@ -18,6 +18,10 @@ public class DefaultRoleRepository implements RoleRepository {
         return toModelRole(roleJpaRepository.findById(id));
     }
 
+    public RoleModel findByName(String name) {
+        return toModelRole(roleJpaRepository.findByName(name));
+    }
+
     public RoleModel toModelRole(RoleEntity roleEntity) {
         RoleModel role = new RoleModel();
         role.setIdRole(roleEntity.getIdRole());

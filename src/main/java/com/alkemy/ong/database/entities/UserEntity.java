@@ -1,5 +1,6 @@
 package com.alkemy.ong.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import javax.persistence.*;
 import javax.persistence.CascadeType;
@@ -40,7 +41,7 @@ public class UserEntity {
 
     @Column(name= "updatedAt", nullable = false)
     private LocalDateTime updatedAt;
-
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_role")
     private RoleEntity roleId;
@@ -48,7 +49,5 @@ public class UserEntity {
     public UserEntity(){
         super();
         this.deleted = false;
-        this.createdAt = createdAt.now();
-        this.updatedAt = updatedAt.now();
     }
 }

@@ -2,19 +2,19 @@ package com.alkemy.ong.database.repositories;
 
 import com.alkemy.ong.database.entities.RoleEntity;
 import com.alkemy.ong.database.entities.UserEntity;
-
 import com.alkemy.ong.database.jparepositories.RoleJpaRepository;
 import com.alkemy.ong.database.jparepositories.UserJpaRepository;
+import com.alkemy.ong.domain.users.RoleModel;
 import com.alkemy.ong.domain.users.UserModel;
 import com.alkemy.ong.domain.users.UserRepository;
-import com.alkemy.ong.web.dto.UserDto;
-import com.alkemy.ong.web.dto.UserRegisterDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import static java.util.stream.Collectors.toList;
+
 @Repository
 public class DefaultUserRepository implements UserRepository {
 
@@ -34,14 +34,42 @@ public class DefaultUserRepository implements UserRepository {
                 .collect(toList());
     }
 
-    public UserModel toModel(UserEntity userEntity) {
+    public void deleteUser(long idUser){
+        Optional<UserEntity> user = userJpaRepository.findById(idUser);
+        user.get().setDeleted(true);
+        userJpaRepository.save(user.get());
+    }
+
+    public Optional<UserModel> findUserByEmail(String email) {
+        Optional<UserEntity> userEntity = userJpaRepository.findByEmail(email);
+        return (userEntity.isPresent()) ? Optional.of(toModel(userEntity.get())) : Optional.empty();
+    }
+
+    public Optional<UserModel> getUserById(long idUser) {
+        Optional<UserEntity> userEntity = userJpaRepository.findById(idUser);
+        return (userEntity.isPresent()) ? Optional.of(toModel(userEntity.get())) : Optional.empty();
+    }
+
+    public UserModel updateUser(UserModel userModel){
+        UserEntity oldUser  = userJpaRepository.findById(userModel.getIdUser()).get();
+        oldUser.setEmail(userModel.getEmail());
+        oldUser.setFirstName(userModel.getFirstName());
+        oldUser.setLastName(userModel.getLastName());
+        oldUser.setPassword(userModel.getPassword());
+        oldUser.setPhoto(userModel.getPhoto());
+        oldUser.setUpdatedAt(userModel.getUpdatedAt());
+        userJpaRepository.save(oldUser);
+        return toModel(oldUser);
+    }
+
+    private UserModel toModel(UserEntity userEntity){
         UserModel userModel = new UserModel();
         userModel.setIdUser(userEntity.getIdUser());
         userModel.setDeleted(userEntity.isDeleted());
         userModel.setCreatedAt(userEntity.getCreatedAt());
         userModel.setEmail(userEntity.getEmail());
         userModel.setFirstName(userEntity.getFirstName());
-        userModel.setIdRole(userEntity.getRoleId().getIdRole());
+        userModel.setIdRole(toRoleModel(userEntity.getRoleId()));
         userModel.setLastName(userEntity.getLastName());
         userModel.setPassword(userEntity.getPassword());
         userModel.setPhoto(userEntity.getPhoto());
@@ -49,66 +77,37 @@ public class DefaultUserRepository implements UserRepository {
         return userModel;
     }
 
-    public void deleteUser(long idUser) {
-        Optional<UserEntity> user = userJpaRepository.findById(idUser);
-        user.get().setDeleted(true);
-        userJpaRepository.save(user.get());
-    }
-
-    public Optional<UserModel> getById(long idUser) {
-        Optional<UserEntity> userEntity = userJpaRepository.findById(idUser);
-        return (userEntity.isPresent()) ? Optional.of(toModel(userEntity.get())) : Optional.empty();
-    }
-
-    public UserDto toDto(UserEntity userEntity){
-        UserDto userDto = new UserDto();
-        userDto.setEmail(userEntity.getEmail());
-        userDto.setFirstName(userEntity.getFirstName());
-        userDto.setIdRole(userEntity.getRoleId().getIdRole());
-        userDto.setLastName(userEntity.getLastName());
-        userDto.setPassword(userEntity.getPassword());
-        userDto.setPhoto(userEntity.getPhoto());
-        userDto.setUpdatedAt(userEntity.getUpdatedAt());
-        return userDto;
-    }
-
-    public UserDto updateUser(UserDto userDto){
-        Optional<UserEntity> oldUser  = userJpaRepository.findById(userDto.getIdUser());
-        UserEntity user = oldUser.get();
-        user.setEmail(userDto.getEmail());
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setPassword(userDto.getPassword());
-        user.setPhoto(userDto.getPhoto());
-        user.setUpdatedAt(userDto.getUpdatedAt());
-        userJpaRepository.save(user);
-        return toDto(user);
-    }
-
-    public boolean findUserByEmail(String email){
-        return userJpaRepository.findByEmail(email) != null;
-    }
-
-    public UserRegisterDto registerUserAccount (UserRegisterDto user){
+    public UserModel registerUserAccount (UserModel userModel){
         UserEntity userEntity = new UserEntity();
         RoleEntity role = roleJpaRepository.findById(1);
-        userEntity.setFirstName(user.getFirstName());
-        userEntity.setLastName(user.getLastName());
-        userEntity.setEmail(user.getEmail());
-        userEntity.setPassword(encoder.encode(user.getPassword()));
+        userEntity.setFirstName(userModel.getFirstName());
+        userEntity.setLastName(userModel.getLastName());
+        userEntity.setEmail(userModel.getEmail());
+        userEntity.setPassword(encoder.encode(userModel.getPassword()));
         userEntity.setRoleId(role);
+        userEntity.setCreatedAt(LocalDateTime.now());
+        userEntity.setUpdatedAt(LocalDateTime.now());
         userJpaRepository.save(userEntity);
-        return toDtoRegisterUser(userEntity);
+        return toModelRegister(userEntity);
     }
 
-    public UserRegisterDto toDtoRegisterUser(UserEntity userEntity){
-        UserRegisterDto user = new UserRegisterDto();
-        user.setFirstName(userEntity.getFirstName());
-        user.setLastName(userEntity.getLastName());
-        user.setEmail(userEntity.getEmail());
-        user.setPassword(userEntity.getPassword());
-        user.setIdRole(userEntity.getRoleId().getIdRole());
-        return user;
+    private RoleModel toRoleModel(RoleEntity roleEntity){
+        RoleModel roleModel = new RoleModel();
+        roleModel.setIdRole(roleEntity.getIdRole());
+        roleModel.setName(roleEntity.getName());
+        roleModel.setDescription(roleEntity.getDescription());
+        roleModel.setCreatedAt(roleEntity.getCreatedAt());
+        roleModel.setUpdatedAt(roleEntity.getUpdatedAt());
+        return roleModel;
     }
 
+    private UserModel toModelRegister(UserEntity userEntity){
+        UserModel userModel = new UserModel();
+        userModel.setFirstName(userEntity.getFirstName());
+        userModel.setLastName(userEntity.getLastName());
+        userModel.setEmail(userEntity.getEmail());
+        userModel.setPassword(userEntity.getPassword());
+        userModel.setIdRole(toRoleModel(userEntity.getRoleId()));
+        return userModel;
+    }
 }

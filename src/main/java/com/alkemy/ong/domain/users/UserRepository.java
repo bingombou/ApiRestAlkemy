@@ -1,15 +1,13 @@
 package com.alkemy.ong.domain.users;
 
-import com.alkemy.ong.web.dto.UserDto;
-import com.alkemy.ong.web.dto.UserRegisterDto;
 import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
     List<UserModel> getUsers();
-    UserRegisterDto registerUserAccount(UserRegisterDto userRegisterDto);
-    boolean findUserByEmail(String email);
-    Optional<UserModel> getById(long idUser);
-    UserDto updateUser(UserDto userDto);
+    UserModel registerUserAccount(UserModel userModel);
+    UserModel updateUser(UserModel userModel);
     void deleteUser(long idUser);
+    Optional<UserModel> findUserByEmail(String email);
+    Optional<UserModel> getUserById(long idUser);
 }

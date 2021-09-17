@@ -1,5 +1,6 @@
 package com.alkemy.ong.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -25,7 +26,7 @@ public class RoleEntity {
 
     @Column(name= "updatedAt", nullable=false)
     private LocalDateTime updatedAt;
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "roleId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserEntity> users;
 }

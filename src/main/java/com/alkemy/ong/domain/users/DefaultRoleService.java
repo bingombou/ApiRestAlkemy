@@ -14,4 +14,8 @@ public class DefaultRoleService implements RoleService {
     public RoleModel findById(long id){
         return roleRepository.findById(id);
     }
+
+    public RoleModel findByName(String name){
+        return roleRepository.findByName(name);
+    }
 }

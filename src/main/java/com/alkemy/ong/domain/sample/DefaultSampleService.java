@@ -16,6 +16,7 @@ public class DefaultSampleService implements SampleService {
 
     @Override
     public List<Sample> findAll() {
+
         return repository.findAll();
     }
 
