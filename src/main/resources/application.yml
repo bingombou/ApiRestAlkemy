@@ -8,3 +8,13 @@ spring:
     password:
     driver-class: com.mysql.jdbc.Driver
     initialization-mode: never
+cloud:
+  aws:
+    credentials:
+      accessKey:
+      secretKey:
+    region:
+      static:
+application:
+  bucket:
+    name:
