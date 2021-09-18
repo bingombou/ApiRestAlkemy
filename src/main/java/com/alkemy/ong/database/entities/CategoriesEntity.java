@@ -47,10 +47,6 @@ public class CategoriesEntity {
             columnDefinition = "datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Date updatedAt;
 
-
-    @Column(nullable = false)
+    @Column(name = "deleted", nullable = false)
     private boolean deleted = Boolean.FALSE;
-
-    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "categoryId", fetch = FetchType.LAZY)
-    private List<NewsEntity> NewsEntityList= new ArrayList<>();*/
 }

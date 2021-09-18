@@ -2,7 +2,9 @@ package com.alkemy.ong.web.controller;
 
 import com.alkemy.ong.domain.organizations.OrganizationModel;
 import com.alkemy.ong.domain.organizations.OrganizationService;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,30 +32,48 @@ public class OrganizationController {
                 .collect(toList());
     }
 
-    private OrganizationDTO toDTO(OrganizationModel organizationModel) {
-        OrganizationDTO organizationDTO = new OrganizationDTO();
-        organizationDTO.setName(organizationModel.getName());
-        organizationDTO.setImage(organizationModel.getImage());
-        organizationDTO.setPhone(organizationModel.getPhone());
-        organizationDTO.setAddress(organizationModel.getAddress());
-        organizationDTO.setUrlFacebook(organizationModel.getUrlFacebook());
-        organizationDTO.setUrlLinkedin(organizationModel.getUrlLinkedin());
-        organizationDTO.setUrlInstagram(organizationModel.getUrlInstagram());
-
-        return organizationDTO;
+    @PostMapping("/public")
+    //@PreAutorize(ROLE_ADIM)
+    public ResponseEntity<OrganizationDTO> updatePublicData(@RequestBody OrganizationDTO dto) {
+        return ResponseEntity.ok(toDTO(organizationService.update(toModel(dto))));
     }
 
     @Data
-    private class OrganizationDTO {
-        public String name;
-        public String image;
-        public int phone;
-        public String address;
+    @AllArgsConstructor
+    static class OrganizationDTO {
+        private int id;
+        private String name;
+        private String image;
+        private int phone;
+        private String address;
         private String urlFacebook;
         private String urlLinkedin;
         private String urlInstagram;
     }
+
+    private OrganizationDTO toDTO(OrganizationModel organizationModel) {
+        return new OrganizationDTO(
+                organizationModel.getId(),
+                organizationModel.getName(),
+                organizationModel.getImage(),
+                organizationModel.getPhone(),
+                organizationModel.getAddress(),
+                organizationModel.getUrlFacebook(),
+                organizationModel.getUrlLinkedin(),
+                organizationModel.getUrlInstagram());
+    }
+
+    public OrganizationModel toModel(OrganizationDTO organizationDto) {
+        OrganizationModel organizationModel = new OrganizationModel();
+        organizationModel.setId(organizationDto.getId());
+        organizationModel.setName(organizationDto.getName());
+        organizationModel.setImage(organizationDto.getImage());
+        organizationModel.setPhone(organizationDto.getPhone());
+        organizationModel.setAddress(organizationDto.getAddress());
+        organizationModel.setUrlFacebook(organizationDto.getUrlFacebook());
+        organizationModel.setUrlLinkedin(organizationDto.getUrlLinkedin());
+        organizationModel.setUrlInstagram(organizationDto.getUrlInstagram());
+
+        return organizationModel;
+    }
 }
-
-
-

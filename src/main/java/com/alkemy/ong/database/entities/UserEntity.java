@@ -1,5 +1,6 @@
 package com.alkemy.ong.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import javax.persistence.*;
 import javax.persistence.CascadeType;
@@ -14,21 +15,18 @@ import java.time.LocalDateTime;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false)
     private Long idUser;
 
-    @NotEmpty(message = "The first name field is required")
     @Column(name = "firstName", length = 30, nullable = false)
     private String firstName;
 
-    @NotEmpty(message = "The last name field is required")
     @Column(name = "lastName", length = 30, nullable = false)
     private String lastName;
 
-    @NotEmpty(message = "The email field is required")
     @Column(name = "email", length = 30, nullable = false, unique = true)
     private String email;
 
-    @NotEmpty(message = "The password field is required")
     @Column(name = "password", length = 100, nullable = false)
     private String password;
 
@@ -36,14 +34,14 @@ public class UserEntity {
     private String photo;
 
     @Column(name = "deleted", nullable = false)
-    private boolean deleted = Boolean.FALSE;
+    private boolean deleted;
 
     @Column(name= "createdAt", nullable = false)
     private LocalDateTime createdAt;
 
     @Column(name= "updatedAt", nullable = false)
     private LocalDateTime updatedAt;
-
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_role")
     private RoleEntity roleId;
@@ -51,7 +49,5 @@ public class UserEntity {
     public UserEntity(){
         super();
         this.deleted = false;
-        this.createdAt = createdAt.now();
-        this.updatedAt = updatedAt.now();
     }
 }

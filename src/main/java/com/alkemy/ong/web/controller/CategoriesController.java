@@ -25,8 +25,19 @@ public class CategoriesController {
     }
 
     @PostMapping
-    public ResponseEntity<?> postCategory(@RequestBody CategoriesModel category){
-        categoriesService.postCategory(category);
+    public ResponseEntity<CategoriesModel> createCategory(@RequestBody CategoriesModel category){
+        categoriesService.createCategory(category);
         return new ResponseEntity<CategoriesModel>(category, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoriesModel> updateCategories(@RequestBody CategoriesModel categoriesModel, @PathVariable(value = "id") Long categoriesId) {
+        return ResponseEntity.ok(categoriesService.updateCategories(categoriesModel, categoriesId));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCategories(@PathVariable (value = "id") Long categoriesId) {
+        categoriesService.deleteCategories(categoriesId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

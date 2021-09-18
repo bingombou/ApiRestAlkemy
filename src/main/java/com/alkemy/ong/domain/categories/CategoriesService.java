@@ -5,6 +5,7 @@ import java.util.List;
 public interface CategoriesService {
 
     List<CategoriesModel> getCategories();
-    CategoriesModel postCategory(CategoriesModel category);
-
+    CategoriesModel createCategory(CategoriesModel category);
+    CategoriesModel updateCategories(CategoriesModel categoriesModel, Long categoriesId);
+    void deleteCategories(Long categoriesId);
 }

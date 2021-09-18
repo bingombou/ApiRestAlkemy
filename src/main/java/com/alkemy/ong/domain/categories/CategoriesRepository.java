@@ -5,6 +5,7 @@ import java.util.List;
 public interface CategoriesRepository {
 
     List<CategoriesModel> getCategories();
-
-    CategoriesModel postCategories(CategoriesModel categories);
+    CategoriesModel createCategory(CategoriesModel category);
+    CategoriesModel updateCategories(CategoriesModel categoriesModel, Long categoriesId);
+    void deleteCategories(Long categoriesId);
 }

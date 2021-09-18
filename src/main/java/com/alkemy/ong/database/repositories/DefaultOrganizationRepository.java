@@ -2,11 +2,14 @@ package com.alkemy.ong.database.repositories;
 
 import com.alkemy.ong.database.entities.OrganizationEntity;
 import com.alkemy.ong.database.jparepositories.OrganizationJPARepository;
+import com.alkemy.ong.domain.organizations.OrganizationDomainException;
 import com.alkemy.ong.domain.organizations.OrganizationModel;
 import com.alkemy.ong.domain.organizations.OrganizationRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -25,14 +28,21 @@ public class DefaultOrganizationRepository implements OrganizationRepository {
     }
 
     @Override
-    public void updateContactInfo(OrganizationModel organizationModel, int id) {
-        if (jpaRepository.findById(id).isPresent()) {
-            jpaRepository.save(toEntity(organizationModel));
-        }
+    public Optional<OrganizationModel> findById(int id) {
+        Optional<OrganizationEntity> organizationEntity = jpaRepository.findById(id);
+        return organizationEntity.isPresent()
+                ? Optional.of(toModel(organizationEntity.get()))
+                : (Optional<OrganizationModel>) Optional.empty().orElseThrow(() -> new OrganizationDomainException());
+    }
+
+    @Override
+    public OrganizationModel save(OrganizationModel organizationModel) {
+        return toModel(jpaRepository.save(toEntity(organizationModel)));
     }
 
     public OrganizationModel toModel(OrganizationEntity organization) {
         OrganizationModel organizationModel = new OrganizationModel();
+        organizationModel.setId(organization.getId());
         organizationModel.setName(organization.getName());
         organizationModel.setImage(organization.getImage());
         organizationModel.setAddress(organization.getAddress());
@@ -50,20 +60,22 @@ public class DefaultOrganizationRepository implements OrganizationRepository {
     }
 
     public OrganizationEntity toEntity(OrganizationModel organization) {
-        OrganizationEntity organizationEntity = new OrganizationEntity();
-        organizationEntity.setName(organization.getName());
-        organizationEntity.setImage(organization.getImage());
-        organizationEntity.setAddress(organization.getAddress());
-        organizationEntity.setPhone(organization.getPhone());
-        organizationEntity.setEmail(organization.getEmail());
-        organizationEntity.setWelcomeText(organization.getWelcomeText());
-        organizationEntity.setAboutUsText(organization.getAboutUsText());
-        organizationEntity.setUpdatedAt(organization.getUpdatedAt());
-        organizationEntity.setUrlFacebook(organization.getUrlFacebook());
-        organizationEntity.setUrlLinkedin(organization.getUrlLinkedin());
-        organizationEntity.setUrlInstagram(organization.getUrlInstagram());
-        organizationEntity.setDeleted(organization.isDeleted());
+        OrganizationEntity organizationEntity = new OrganizationEntity(
+                organization.getId(),
+                organization.getName(),
+                organization.getImage(),
+                organization.getAddress(),
+                organization.getPhone(),
+                organization.getEmail(),
+                organization.getWelcomeText(),
+                organization.getAboutUsText(),
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                organization.isDeleted(),
+                organization.getUrlFacebook(),
+                organization.getUrlLinkedin(),
+                organization.getUrlInstagram());
+
         return organizationEntity;
     }
 }
-

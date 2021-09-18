@@ -2,7 +2,9 @@ package com.alkemy.ong.domain.slides;
 
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -38,5 +40,14 @@ public class DefaultSlideService implements SlideService {
     @Override
     public void delete(int id) {
             repository.delete(getSlide(id));
+    }
+
+    @Override
+    public List<SlideModel> getAllByOrgIdOrdered(int orgId) {
+        final List<SlideModel> slideModels = repository.getAllByOrgId(orgId);
+        return slideModels
+                .stream()
+                .sorted(Comparator.comparingInt(SlideModel::getIdOrganization))
+                .collect(Collectors.toList());
     }
 }

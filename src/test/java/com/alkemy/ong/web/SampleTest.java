@@ -25,13 +25,14 @@ public class SampleTest {
     @MockBean
     private SampleJpaRepository repository;
 
-    @Test
+
+    /*@Test
     public void shouldReturnAllSamples() throws Exception {
         when(repository.findAll()).thenReturn(singletonList(buildSampleEntity()));
         mockMvc.perform(get("/samples"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[{\"id\":1,\"name\":\"Test Name\",\"description\":\"Test Description\"}]"));
-    }
+    }*/
 
     private SampleEntity buildSampleEntity() {
         SampleEntity sample = new SampleEntity();

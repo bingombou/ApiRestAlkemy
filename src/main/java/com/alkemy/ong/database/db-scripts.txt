@@ -87,6 +87,7 @@ CREATE TABLE IF NOT EXISTS Slide(idSlide INT NOT NULL AUTO_INCREMENT PRIMARY KEY
       `about_us_text` VARCHAR(45) NULL,
       `created_at` TIMESTAMP(8) NULL,
       `updated_at` TIMESTAMP(8) NULL,
+      `deleted` boolean  NOT NULL,
       `url_facebook` VARCHAR(45) NOT NULL,
       `url_linkedin` VARCHAR(45) NOT NULL,
       `url_instagram` VARCHAR(45) NOT NULL,
