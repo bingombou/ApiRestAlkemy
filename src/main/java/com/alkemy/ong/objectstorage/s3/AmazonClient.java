@@ -1,4 +1,4 @@
-package com.alkemy.ong.objectstorage;
+package com.alkemy.ong.objectstorage.s3;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
