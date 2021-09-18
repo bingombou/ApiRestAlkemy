@@ -1,19 +1,25 @@
 package com.alkemy.ong.database.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.*;
+import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "organizations")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @SQLDelete(sql = "UPDATE organizations SET deleted = true WHERE id=?")
 @FilterDef(name = "deletedOrganizationFilter", parameters = @ParamDef(name = "isDeleted", type = "boolean"))
 @Filter(name = "deletedProductFilter", condition = "deleted = :isDeleted")
@@ -53,21 +59,27 @@ public class OrganizationEntity implements Serializable {
     @Column(name = "aboutUsText", nullable = true)
     private String aboutUsText;
 
-    @Column(name = "createAt", nullable = false)
+    @Column(name = "createdAt", nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updateAt", nullable = false)
+    @Column(name = "updatedAt", nullable = false)
     private LocalDateTime updatedAt;
 
     @Column(name = "deleted")
     private boolean deleted = false;
 
+    @URL(message = "URL is not valid")
+    @Pattern(regexp = "https://www.redsocial.com/user")
     @Column(name = "urlFacebook")
     private String urlFacebook;
 
+    @URL(message = "URL is not valid")
+    @Pattern(regexp = "https://www.redsocial.com/user")
     @Column(name = "urlLinkedin")
     private String urlLinkedin;
 
+    @URL(message = "URL is not valid")
+    @Pattern(regexp = "https://www.redsocial.com/user")
     @Column(name = "urlInstagram")
     private String urlInstagram;
 }
