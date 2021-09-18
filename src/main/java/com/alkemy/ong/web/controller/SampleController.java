@@ -2,12 +2,14 @@ package com.alkemy.ong.web.controller;
 
 import com.alkemy.ong.domain.sample.Sample;
 import com.alkemy.ong.domain.sample.SampleService;
+import com.alkemy.ong.domain.utils.Page;
+import com.alkemy.ong.web.dto.PageDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
+import static com.alkemy.ong.commons.PageUtils.toPageDto;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
@@ -21,8 +23,10 @@ public class SampleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Sample>> findAll() {
-        return ResponseEntity.ok(sampleService.findAll());
+    public ResponseEntity<PageDto> findAll(@RequestParam("page") int page) {
+        Page<Sample> samples = sampleService.findAll(page);
+
+        return ResponseEntity.ok(toPageDto(samples, "testimonials"));
     }
 
     @GetMapping("/{id}")

@@ -1,10 +1,11 @@
 package com.alkemy.ong.domain.sample;
 
-import java.util.List;
+import com.alkemy.ong.domain.utils.Page;
+
 import java.util.Optional;
 
 public interface SampleRepository {
-    List<Sample> findAll();
+    Page<Sample> findAll(int page);
 
     Sample create(Sample sample);
 

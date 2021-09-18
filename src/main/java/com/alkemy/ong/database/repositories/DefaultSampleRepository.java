@@ -2,14 +2,16 @@ package com.alkemy.ong.database.repositories;
 
 import com.alkemy.ong.database.entities.SampleEntity;
 import com.alkemy.ong.database.jparepositories.SampleJpaRepository;
-import com.alkemy.ong.domain.exceptions.DomainException;
 import com.alkemy.ong.domain.sample.Sample;
 import com.alkemy.ong.domain.sample.SampleRepository;
+import com.alkemy.ong.domain.utils.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
+import static com.alkemy.ong.commons.PageUtils.DEFAULT_PAGE_SIZE;
 import static java.util.stream.Collectors.toList;
 
 @Repository
@@ -22,10 +24,21 @@ public class DefaultSampleRepository implements SampleRepository {
     }
 
     @Override
-    public List<Sample> findAll() {
-        return jpaRepository.findAll().stream()
-                .map(this::toModel)
-                .collect(toList());
+    public Page<Sample> findAll(int page) {
+        Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
+        org.springframework.data.domain.Page<SampleEntity> samples = jpaRepository.findAll(pageable);
+
+        return toPage(samples);
+    }
+
+    private Page<Sample> toPage(org.springframework.data.domain.Page<SampleEntity> samples) {
+        Page<Sample> page = new Page<>();
+        page.setContent(samples.getContent().stream()
+                .map(this::toModel).collect(toList()));
+        page.setHasNextPage(samples.hasNext());
+        page.setHasPreviousPage(samples.hasPrevious());
+        page.setCurrentPage(samples.getPageable().getPageNumber());
+        return page;
     }
 
     @Override

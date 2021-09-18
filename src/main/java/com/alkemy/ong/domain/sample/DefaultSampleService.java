@@ -1,9 +1,8 @@
 package com.alkemy.ong.domain.sample;
 
 import com.alkemy.ong.domain.exceptions.DomainException;
+import com.alkemy.ong.domain.utils.Page;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class DefaultSampleService implements SampleService {
@@ -15,8 +14,8 @@ public class DefaultSampleService implements SampleService {
     }
 
     @Override
-    public List<Sample> findAll() {
-        return repository.findAll();
+    public Page<Sample> findAll(int page) {
+        return repository.findAll(page);
     }
 
     @Override
