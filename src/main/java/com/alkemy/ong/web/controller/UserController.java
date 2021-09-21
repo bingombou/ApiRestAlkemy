@@ -58,6 +58,11 @@ public class UserController {
         return new ResponseEntity<>(toDtoLogin(userService.loginUser(userModel)),HttpStatus.OK);
     }
 
+    @GetMapping("/auth/me")
+    public ResponseEntity<ProfileDto> profile(){
+        return new ResponseEntity<>(toDtoProfile(userService.profile()),HttpStatus.OK);
+    }
+
     private void checkExistence(Long id) {
         userService.getUserById(id);
     }
@@ -79,6 +84,31 @@ public class UserController {
         private String password;
 
         private String role;
+    }
+
+    @Data
+    @AllArgsConstructor
+    private class ProfileDto{
+
+        @NotEmpty(message = "Name field is required")
+        private String firstName;
+
+        @NotEmpty(message = "Last Name field is required")
+        private String lastName;
+
+        @Email(message = "Email should be valid")
+        private String email;
+
+        private String photo;
+    }
+
+    private ProfileDto toDtoProfile(UserModel userModel){
+        return new ProfileDto(
+                userModel.getFirstName(),
+                userModel.getLastName(),
+                userModel.getEmail(),
+                userModel.getPhoto()
+        );
     }
 
     private ResponseDtoLogin toDtoLogin(UserModel userModel){

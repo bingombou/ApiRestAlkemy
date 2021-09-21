@@ -8,11 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class DefaultUserService implements UserService {
@@ -89,5 +92,24 @@ public class DefaultUserService implements UserService {
     @Override
     public UserModel getUserById(Long id) {
         return userRepository.getUserById(id).orElseThrow(DomainException::new);
+    }
+
+    public UserModel profile(){
+        DefaultUserDetails userDetails =
+                (DefaultUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .collect(toList());
+
+        RoleModel roleModel = roleRepository.findByName(roles.get(0));
+
+        UserModel user = new UserModel(
+                userDetails.getFirstName(),
+                userDetails.getLastName(),
+                userDetails.getEmail(),
+                userDetails.getPassword(),
+                roleModel);
+        return user;
     }
 }

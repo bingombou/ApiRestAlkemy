@@ -11,5 +11,6 @@ public interface UserService {
     UserModel updateUser(UserModel userModel);
     void deleteUser(long idUser);
     UserModel loginUser(UserModel userModel);
+    UserModel profile();
     UserModel getUserById(Long id);
 }
