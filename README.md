@@ -40,3 +40,7 @@ Put your code there.
 + Try lombok (simplifies getters/setters)
 + Swagger for documentation
     * Usage Example: https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api
+
+##Useful links
++ Swagger documentation
+  * http://localhost:8080/swagger-ui.html
