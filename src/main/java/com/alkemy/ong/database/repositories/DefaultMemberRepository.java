@@ -5,11 +5,15 @@ import com.alkemy.ong.database.jparepositories.MemberJPARepository;
 import com.alkemy.ong.domain.members.MemberDomainException;
 import com.alkemy.ong.domain.members.MemberModel;
 import com.alkemy.ong.domain.members.MemberRepository;
+import com.alkemy.ong.domain.utils.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import static com.alkemy.ong.commons.PageUtils.DEFAULT_PAGE_SIZE;
+import static java.util.stream.Collectors.toList;
 
 @Repository
 public class DefaultMemberRepository implements MemberRepository {
@@ -18,12 +22,6 @@ public class DefaultMemberRepository implements MemberRepository {
 
     public DefaultMemberRepository(MemberJPARepository memberRepository) {
         this.memberRepository = memberRepository;
-    }
-
-    @Override
-    public List<MemberModel> getMembers() {
-        List<MemberEntity> members = memberRepository.findAll();
-        return members.stream().map(MemberEntity -> toModel(MemberEntity)).collect(Collectors.toList());
     }
 
     public MemberModel createMember(MemberModel member) {
@@ -76,5 +74,22 @@ public class DefaultMemberRepository implements MemberRepository {
 
     public Optional<MemberEntity> findById(Long id){
         return memberRepository.findById(id);
+    }
+
+    @Override
+    public Page<MemberModel> getMembers(int page) {
+        Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
+        org.springframework.data.domain.Page<MemberEntity> samples = memberRepository.findAll(pageable);
+        return toPage(samples);
+    }
+
+    private Page<MemberModel> toPage(org.springframework.data.domain.Page<MemberEntity> members) {
+        Page<MemberModel> page = new Page<>();
+        page.setContent(members.getContent().stream()
+                .map(this::toModel).collect(toList()));
+        page.setHasNextPage(members.hasNext());
+        page.setHasPreviousPage(members.hasPrevious());
+        page.setCurrentPage(members.getPageable().getPageNumber());
+        return page;
     }
 }

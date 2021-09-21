@@ -3,14 +3,16 @@ package com.alkemy.ong.web.controller;
 
 import com.alkemy.ong.domain.members.MemberModel;
 import com.alkemy.ong.domain.members.MemberService;
+import com.alkemy.ong.domain.utils.Page;
 import com.alkemy.ong.web.dto.MemberDto;
+import com.alkemy.ong.web.dto.PageDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
+
+import static com.alkemy.ong.commons.PageUtils.toPageDto;
 
 @RequestMapping("members")
 @RestController
@@ -23,9 +25,9 @@ public class MemberController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MemberDto>> getMembers(){
-        List<MemberDto> result =  memberService.getMembers().stream().map(m -> toDto(m)).collect(Collectors.toList());
-        return new ResponseEntity<List<MemberDto>>(result, HttpStatus.OK) ;
+    public ResponseEntity<PageDto> getMembers(@RequestParam("page") int page){
+        Page<MemberModel> members = memberService.getMembers(page);
+        return new ResponseEntity<>(toPageDto(members, "members"), HttpStatus.OK);
     }
 
     @PostMapping
@@ -67,5 +69,4 @@ public class MemberController {
 
         return new ResponseEntity<MemberDto>(memberDto, HttpStatus.OK);
     }
-
 }

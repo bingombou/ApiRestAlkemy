@@ -1,11 +1,10 @@
 package com.alkemy.ong.domain.members;
 
-
-import java.util.List;
+import com.alkemy.ong.domain.utils.Page;
 
 public interface MemberService {
 
-    List<MemberModel> getMembers();
+    Page<MemberModel> getMembers(int page);
     MemberModel createMember(MemberModel member);
     MemberModel deleteMember(Long id);
     MemberModel updateMember(MemberModel member);
