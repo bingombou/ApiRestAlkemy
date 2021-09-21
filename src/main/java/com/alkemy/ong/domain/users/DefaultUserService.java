@@ -1,6 +1,7 @@
 package com.alkemy.ong.domain.users;
 
 import com.alkemy.ong.domain.exceptions.DomainException;
+import com.alkemy.ong.domain.utils.Jwt;
 import com.alkemy.ong.web.security.DefaultUserDetails;
 import com.alkemy.ong.web.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,10 @@ public class DefaultUserService implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final AuthenticationManager authenticationManager;
+
     @Autowired
     JwtUtils jwtUtils;
+
     public DefaultUserService(UserRepository userRepository, RoleRepository roleRepository, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -39,12 +42,19 @@ public class DefaultUserService implements UserService {
         return userRepository.updateUser(userModel);
     }
 
-    public UserModel registerUserAccount(UserModel userModel){
+    public Jwt registerUserAccount(UserModel userModel){
         Optional<UserModel> user = userRepository.findUserByEmail(userModel.getEmail());
+        Jwt jwt = new Jwt();
         if(user.isPresent()){
             throw new DomainException("There is an account with that email address: " + userModel.getEmail());
         }
-        return userRepository.registerUserAccount(userModel);
+        else{
+            userRepository.registerUserAccount(userModel);
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(userModel.getEmail(), userModel.getPassword()));
+            jwt.setToken(jwtUtils.generateJwtToken(authentication));
+        }
+        return jwt;
     }
 
     public void deleteUser(long idUser) {
@@ -55,26 +65,29 @@ public class DefaultUserService implements UserService {
     }
 
     public UserModel loginUser(UserModel userModel){
-
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userModel.getEmail(), userModel.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
         DefaultUserDetails userDetails = (DefaultUserDetails) authentication.getPrincipal();
 
         List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
+                                        .map(item -> item.getAuthority())
+                                        .collect(Collectors.toList());
 
         RoleModel roleModel = roleRepository.findByName(roles.get(0));
         UserModel user = new UserModel(
-                                        userDetails.getFirstName()+"---->"+"JWT: "+jwt,
+                                        userDetails.getFirstName(),
                                         userDetails.getLastName(),
                                         userDetails.getEmail(),
                                         userDetails.getPassword(),
                                         roleModel
                                         );
         return user;
+    }
+
+    @Override
+    public UserModel getUserById(Long id) {
+        return userRepository.getUserById(id).orElseThrow(DomainException::new);
     }
 }

@@ -2,6 +2,7 @@ package com.alkemy.ong.web.controller;
 
 import com.alkemy.ong.domain.users.UserModel;
 import com.alkemy.ong.domain.users.UserService;
+import com.alkemy.ong.domain.utils.Jwt;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,7 @@ public class UserController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long idUser, @Valid @RequestBody UserModel userModel) {
+        checkExistence(idUser);
         return new ResponseEntity<>(toDto(userService.updateUser(userModel)), HttpStatus.OK);
     }
 
@@ -47,13 +49,17 @@ public class UserController {
     }
 
     @PostMapping("/auth/register")
-    public ResponseEntity<UserRegisterDto> registerUserAccount(@Valid @RequestBody UserModel userModel){
-        return new ResponseEntity<>(toRegisterDto(userService.registerUserAccount(userModel)), HttpStatus.OK);
+    public ResponseEntity<Jwt> registerUserAccount(@Valid @RequestBody UserModel userModel){
+        return new ResponseEntity<>(userService.registerUserAccount(userModel), HttpStatus.OK);
     }
 
     @PostMapping("/auth/login")
     public ResponseEntity<ResponseDtoLogin> loginUser(@Valid @RequestBody UserModel userModel){
         return new ResponseEntity<>(toDtoLogin(userService.loginUser(userModel)),HttpStatus.OK);
+    }
+
+    private void checkExistence(Long id) {
+        userService.getUserById(id);
     }
 
     @Data
