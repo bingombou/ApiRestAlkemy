@@ -1,5 +1,7 @@
 package com.alkemy.ong.domain.testimonials;
 
+import com.alkemy.ong.domain.utils.Page;
+
 public interface TestimonialService {
 
     TestimonialModel save(TestimonialModel testimonialModel);
@@ -7,4 +9,7 @@ public interface TestimonialService {
     TestimonialModel update(TestimonialModel testimonialModel, Long testimonialId);
 
     void deleteById(Long testimonialId);
+
+    Page<TestimonialModel> findAll(int page);
+
 }

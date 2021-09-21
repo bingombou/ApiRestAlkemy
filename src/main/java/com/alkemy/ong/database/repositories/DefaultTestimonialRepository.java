@@ -4,9 +4,14 @@ import com.alkemy.ong.database.entities.TestimonialEntity;
 import com.alkemy.ong.database.jparepositories.TestimonialJpaRepository;
 import com.alkemy.ong.domain.testimonials.TestimonialModel;
 import com.alkemy.ong.domain.testimonials.TestimonialRepo;
+import com.alkemy.ong.domain.utils.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-
 import java.util.Optional;
+
+import static com.alkemy.ong.commons.PageUtils.DEFAULT_PAGE_SIZE;
+import static java.util.stream.Collectors.toList;
 
 @Repository
 public class DefaultTestimonialRepository implements TestimonialRepo {
@@ -68,9 +73,25 @@ public class DefaultTestimonialRepository implements TestimonialRepo {
         return testimonialModel;
     }
 
-
     @Override
     public void deleteByTestimonialId(Long testimonialId) {
         testimonialJpaRepository.deleteById(testimonialId);
     }
+
+    @Override
+    public Page<TestimonialModel> findAll(int page) {
+        Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
+        org.springframework.data.domain.Page<TestimonialEntity> testimonials = testimonialJpaRepository.findAll(pageable);
+        return toPage(testimonials);
+    }
+
+    private Page<TestimonialModel> toPage(org.springframework.data.domain.Page<TestimonialEntity> testimonials){
+        Page<TestimonialModel> page = new Page<>();
+        page.setContent(testimonials.getContent().stream().map(this::convertToModel).collect(toList()));
+        page.setHasNextPage(testimonials.hasNext());
+        page.setHasPreviousPage(testimonials.hasPrevious());
+        page.setCurrentPage(testimonials.getPageable().getPageNumber());
+        return page;
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.alkemy.ong.domain.testimonials;
 
+import com.alkemy.ong.domain.utils.Page;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,4 +33,10 @@ public class DefaultTestimonialService implements TestimonialService{
             throw new TestimonialDomainException();
         }
     }
+
+    @Override
+    public Page<TestimonialModel> findAll(int page) {
+        return testimonialRepo.findAll(page);
+    }
+
 }
