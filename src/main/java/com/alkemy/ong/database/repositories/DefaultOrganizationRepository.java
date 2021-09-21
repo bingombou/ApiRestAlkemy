@@ -55,7 +55,6 @@ public class DefaultOrganizationRepository implements OrganizationRepository {
         organizationModel.setUrlFacebook(organization.getUrlFacebook());
         organizationModel.setUrlLinkedin(organization.getUrlLinkedin());
         organizationModel.setUrlInstagram(organization.getUrlInstagram());
-        organizationModel.setDeleted(organization.isDeleted());
         return organizationModel;
     }
 

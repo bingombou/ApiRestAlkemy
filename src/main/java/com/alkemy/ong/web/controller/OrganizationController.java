@@ -4,6 +4,7 @@ import com.alkemy.ong.domain.organizations.OrganizationModel;
 import com.alkemy.ong.domain.organizations.OrganizationService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import net.minidev.json.annotate.JsonIgnore;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,9 +27,9 @@ public class OrganizationController {
     }
 
     @GetMapping("/public")
-    public List<OrganizationDTO> getPublicInfo() {
+    public List<OrganizationPublicDTO> getPublicInfo() {
         return organizationService.getAllOrganization().stream()
-                .map(o -> toDTO(o))
+                .map(o -> toPublicDTO(o))
                 .collect(toList());
     }
 
@@ -41,6 +42,7 @@ public class OrganizationController {
     @Data
     @AllArgsConstructor
     static class OrganizationDTO {
+        @JsonIgnore
         private int id;
         private String name;
         private String image;
@@ -49,6 +51,21 @@ public class OrganizationController {
         private String urlFacebook;
         private String urlLinkedin;
         private String urlInstagram;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class OrganizationPublicDTO {
+        private String urlFacebook;
+        private String urlLinkedin;
+        private String urlInstagram;
+    }
+
+    private OrganizationPublicDTO toPublicDTO(OrganizationModel organizationModel) {
+        return new OrganizationPublicDTO(
+                organizationModel.getUrlFacebook(),
+                organizationModel.getUrlLinkedin(),
+                organizationModel.getUrlInstagram());
     }
 
     private OrganizationDTO toDTO(OrganizationModel organizationModel) {

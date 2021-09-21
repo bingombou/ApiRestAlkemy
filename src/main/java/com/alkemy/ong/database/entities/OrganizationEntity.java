@@ -79,7 +79,7 @@ public class OrganizationEntity implements Serializable {
     private String urlLinkedin;
 
     @URL(message = "URL is not valid")
-    @Pattern(regexp = "https://www.redsocial.com/user")
+        @Pattern(regexp = "https://www.redsocial.com/user")
     @Column(name = "urlInstagram")
     private String urlInstagram;
 }
