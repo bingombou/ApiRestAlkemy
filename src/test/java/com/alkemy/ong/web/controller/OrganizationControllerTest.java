@@ -3,7 +3,6 @@ package com.alkemy.ong.web.controller;
 import com.alkemy.ong.database.entities.OrganizationEntity;
 import com.alkemy.ong.database.jparepositories.OrganizationJPARepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,26 +35,7 @@ class OrganizationControllerTest {
     @Autowired
     ObjectMapper mapper;
 
-    OrganizationEntity organizationTest() {
-        OrganizationEntity organizationEntity= new OrganizationEntity();
-        organizationEntity.setId(1);
-        organizationEntity.setName("Test Name");
-        organizationEntity.setImage("Test img");
-        organizationEntity.setAddress("Test address");
-        organizationEntity.setPhone(123);
-        organizationEntity.setEmail("test@test.com");
-        organizationEntity.setWelcomeText("Test welcome");
-        organizationEntity.setAboutUsText("Test about");
-        organizationEntity.setCreatedAt(LocalDateTime.now());
-        organizationEntity.setUpdatedAt(LocalDateTime.now());
-        organizationEntity.setDeleted(false);
-        organizationEntity.setUrlFacebook("https://www.redsocial.com/user");
-        organizationEntity.setUrlLinkedin("https://www.redsocial.com/user");
-        organizationEntity.setUrlInstagram("https://www.redsocial.com/user");
-    return organizationEntity;
-    }
-    private List<OrganizationEntity> SetUpList() {
-        List<OrganizationEntity> organizationEntities = new ArrayList<>();
+    private OrganizationEntity buildOrganization() {
         OrganizationEntity organizationEntity = new OrganizationEntity();
         organizationEntity.setId(1);
         organizationEntity.setName("Test Name");
@@ -72,13 +52,18 @@ class OrganizationControllerTest {
         organizationEntity.setUrlLinkedin("https://www.redsocial.com/user");
         organizationEntity.setUrlInstagram("https://www.redsocial.com/user");
 
-        organizationEntities.add(organizationEntity);
+        return organizationEntity;
+    }
+
+    private List<OrganizationEntity> buildList() {
+        List<OrganizationEntity> organizationEntities = new ArrayList<>();
+        organizationEntities.add(buildOrganization());
         return organizationEntities;
     }
 
     @Test
     void getAll() throws Exception {
-        List<OrganizationEntity> organizationEntities = SetUpList();
+        List<OrganizationEntity> organizationEntities = buildList();
 
         when(repository.findAll()).thenReturn(organizationEntities);
 
@@ -86,11 +71,6 @@ class OrganizationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", is(1)))
-                .andExpect(jsonPath("$[0].name", is("Test Name")))
-                .andExpect(jsonPath("$[0].image", is("Test img")))
-                .andExpect(jsonPath("$[0].address", is("Test address")))
-                .andExpect(jsonPath("$[0].phone", is(123)))
                 .andExpect(jsonPath("$[0].urlFacebook", is("https://www.redsocial.com/user")))
                 .andExpect(jsonPath("$[0].urlLinkedin", is("https://www.redsocial.com/user")))
                 .andExpect(jsonPath("$[0].urlInstagram", is("https://www.redsocial.com/user")));
@@ -98,7 +78,7 @@ class OrganizationControllerTest {
 
     @Test
     // @WithMockUser(username = "userDeveloper@test.com", authorities = {"ROLE_ADMIN"}) //Cuenta de Admin.
-    public void idNotExist() throws Exception {
+     void idNotExist() throws Exception {
         when(repository.findById(15)).thenReturn(Optional.empty());
         mockMvc.perform(get("/organization/public/15"))
                 .andExpect(status().isNotFound());
@@ -106,10 +86,10 @@ class OrganizationControllerTest {
 
     @Test
     // @WithMockUser(username = "userDeveloper@test.com", authorities = {"ROLE_ADMIN"}) //Cuenta de Admin.
-    public void idOk() throws Exception {
-        when(repository.findById(1)).thenReturn(Optional.of(organizationTest()));
+    void idOk() throws Exception {
+        when(repository.findById(1)).thenReturn(Optional.of(buildOrganization()));
         mockMvc.perform(get("/organization/public")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 }
