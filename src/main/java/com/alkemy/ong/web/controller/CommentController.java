@@ -2,13 +2,11 @@ package com.alkemy.ong.web.controller;
 
 import com.alkemy.ong.domain.comments.CommentModel;
 import com.alkemy.ong.domain.comments.CommentService;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -30,6 +28,12 @@ public class CommentController {
         return new ResponseEntity<>(toDto(commentService.createComment(toModel(commentDto))), HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<CommentSimpleDto> deleteComment(@Valid @RequestBody CommentSimpleDto commentSimpleDto) {
+        commentService.deleteComment(toModel(commentSimpleDto));
+        return new ResponseEntity<>(commentSimpleDto, HttpStatus.OK);
+    }
+
     private CommentModel toModel(CommentDto commentDto) {
         CommentModel commentModel = new CommentModel();
         commentModel.setBody(commentDto.getBody());
@@ -47,6 +51,12 @@ public class CommentController {
         return commentDto;
     }
 
+    private CommentModel toModel(CommentSimpleDto commentSimpleDto) {
+        CommentModel commentModel = new CommentModel();
+        commentModel.setId(commentSimpleDto.getId());
+        commentModel.setIdUser(commentSimpleDto.idUser);
+        return commentModel;
+    }
 
     @Data
     private static class CommentDto {
@@ -59,7 +69,15 @@ public class CommentController {
         private int idNews;
         @NotBlank(message = "Field body is required or must not be empty")
         private String body;
+    }
 
+    @Data
+    @AllArgsConstructor
+    private static class CommentSimpleDto {
+        private int id;
+        @NotNull
+        @Min(value = 1, message = "Field idUser required or requires a number greater than zero ")
+        private long idUser;
 
     }
 }

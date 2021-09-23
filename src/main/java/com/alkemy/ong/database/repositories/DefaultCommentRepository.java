@@ -7,6 +7,8 @@ import com.alkemy.ong.domain.comments.CommentsRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
+
 
 @Repository
 public class DefaultCommentRepository implements CommentsRepository {
@@ -18,11 +20,21 @@ public class DefaultCommentRepository implements CommentsRepository {
     }
 
     @Override
-    public CommentModel createComment(CommentModel commentModel) {
-        return toModel(jpaRepository.save(toEntity(commentModel)));
+    public CommentModel createComment(CommentModel comment) {
+        return toModel(jpaRepository.save(createModelEntity(comment)));
     }
 
-    private CommentEntity toEntity(CommentModel commentModel) {
+    @Override
+    public void deleteComment(CommentModel comment) {
+        jpaRepository.delete(toEntity(comment));
+    }
+
+    @Override
+    public Optional<CommentModel> findById(CommentModel comment) {
+        return jpaRepository.findById(comment.getId()).map(this::toModel);
+    }
+
+    private CommentEntity createModelEntity(CommentModel commentModel) {
         CommentEntity commentEntity = new CommentEntity();
         commentEntity.setBody(commentModel.getBody());
         commentEntity.setIdNews(commentModel.getIdNews());
@@ -32,15 +44,25 @@ public class DefaultCommentRepository implements CommentsRepository {
         return commentEntity;
     }
 
-    private CommentModel toModel(CommentEntity commentEntity) {
-        CommentModel commentModel = new CommentModel();
-        commentModel.setBody(commentEntity.getBody());
-        commentModel.setIdNews(commentEntity.getIdNews());
-        commentModel.setIdUser(commentEntity.getIdUser());
-        commentModel.setId(commentEntity.getIdComment());
-        commentModel.setCreatedAt(commentEntity.getCreatedAt());
-        commentModel.setUpdatedAt(commentEntity.getUpdatedAt());
+    private CommentEntity toEntity(CommentModel commentModel) {
+        CommentEntity commentEntity = new CommentEntity();
+        commentEntity.setId(commentModel.getId());
+        commentEntity.setBody(commentModel.getBody());
+        commentEntity.setIdNews(commentModel.getIdNews());
+        commentEntity.setIdUser(commentModel.getIdUser());
+        commentEntity.setCreatedAt(LocalDateTime.now());
+        commentEntity.setUpdatedAt(LocalDateTime.now());
+        return commentEntity;
+    }
 
-        return commentModel;
+    private CommentModel toModel(CommentEntity commentEntity) {
+        CommentModel comment = new CommentModel();
+        comment.setBody(commentEntity.getBody());
+        comment.setIdNews(commentEntity.getIdNews());
+        comment.setIdUser(commentEntity.getIdUser());
+        comment.setId(commentEntity.getId());
+        comment.setCreatedAt(commentEntity.getCreatedAt());
+        comment.setUpdatedAt(commentEntity.getUpdatedAt());
+        return comment;
     }
 }

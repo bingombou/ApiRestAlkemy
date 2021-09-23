@@ -7,6 +7,7 @@ import com.alkemy.ong.domain.testimonials.TestimonialDomainException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -50,13 +51,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = {MemberDomainException.class})
-    public ResponseEntity<?> handleMemberException(Exception e){
+    public ResponseEntity<?> handleMemberException(Exception e) {
         return ResponseEntity.notFound().build();
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<?> resourceNotFoundHandling(AccessDeniedException exception, WebRequest request) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", new Date());
+        body.put("message", exception.getMessage());
+        body.put("details", request.getDescription(false));
+        return new ResponseEntity<>(body, HttpStatus.FORBIDDEN);
+    }
     @ExceptionHandler ( value = {TestimonialDomainException.class})
     protected ResponseEntity <?> hangTestimonialException(Exception e){
         return ResponseEntity.notFound().build();
+
     }
 }
 

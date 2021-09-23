@@ -9,20 +9,17 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "comments")
-public class CommentEntity  implements Serializable {
+public class CommentEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "id_comment")
-    private int idComment;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
 
     @Column(name = "id_news", nullable = false)
     private int idNews;
 
     @Column(name = "id_user", nullable = false)
     private Long idUser;
-
-    @Column(name = "deleted", nullable = false)
-    private boolean deleted = Boolean.FALSE;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
