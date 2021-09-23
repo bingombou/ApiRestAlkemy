@@ -32,10 +32,6 @@ class DefaultMemberService implements MemberService {
 
     }
 
-    @Override
-    public MemberModel updateMember(MemberModel member) {
-      return memberRepository.updateMember(member);
-    }
 
     private MemberModel toModel(MemberEntity mm) {
         MemberModel member = new MemberModel();
@@ -51,5 +47,12 @@ class DefaultMemberService implements MemberService {
         member.setUpdatedAt(mm.getUpdatedAt());
         return member;
     }
+
+    public MemberModel updateMember(MemberModel member) {
+        Optional<MemberEntity> result = memberRepository.findById(member.getId());
+        memberRepository.updateMember(member);
+        return toModel(result.orElseThrow(MemberDomainException::new));
+    }
+
 
 }

@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
@@ -18,6 +19,7 @@ public class MemberEntity {
 
     @NotEmpty(message = "Name field is required")
     @Column(nullable = false, length = 25)
+    @NotNull
     private String name;
 
     @Column(length = 50, name = "facebook_url")
