@@ -1,8 +1,6 @@
 package com.alkemy.ong.domain.users;
 
-import com.alkemy.ong.domain.sample.Sample;
 import com.alkemy.ong.domain.utils.Jwt;
-
 import java.util.List;
 
 public interface UserService {

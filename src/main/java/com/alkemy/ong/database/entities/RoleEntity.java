@@ -3,7 +3,6 @@ package com.alkemy.ong.database.entities;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.List;
 

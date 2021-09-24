@@ -9,7 +9,6 @@ import com.alkemy.ong.domain.users.UserModel;
 import com.alkemy.ong.domain.users.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -41,25 +40,13 @@ public class DefaultUserRepository implements UserRepository {
     }
 
     public Optional<UserModel> findUserByEmail(String email) {
-        Optional<UserEntity> userEntity = userJpaRepository.findByEmail(email);
-        return (userEntity.isPresent()) ? Optional.of(toModel(userEntity.get())) : Optional.empty();
+        return userJpaRepository.findByEmail(email)
+                .map(this::toModel);
     }
 
     public Optional<UserModel> getUserById(long idUser) {
-        Optional<UserEntity> userEntity = userJpaRepository.findById(idUser);
-        return (userEntity.isPresent()) ? Optional.of(toModel(userEntity.get())) : Optional.empty();
-    }
-
-    public UserModel updateUser(UserModel userModel){
-        UserEntity oldUser  = userJpaRepository.findById(userModel.getIdUser()).get();
-        oldUser.setEmail(userModel.getEmail());
-        oldUser.setFirstName(userModel.getFirstName());
-        oldUser.setLastName(userModel.getLastName());
-        oldUser.setPassword(userModel.getPassword());
-        oldUser.setPhoto(userModel.getPhoto());
-        oldUser.setUpdatedAt(userModel.getUpdatedAt());
-        userJpaRepository.save(oldUser);
-        return toModel(oldUser);
+        return userJpaRepository.findById(idUser)
+                .map(this::toModel);
     }
 
     private UserModel toModel(UserEntity userEntity){
@@ -88,7 +75,12 @@ public class DefaultUserRepository implements UserRepository {
         userEntity.setCreatedAt(LocalDateTime.now());
         userEntity.setUpdatedAt(LocalDateTime.now());
         userJpaRepository.save(userEntity);
-        return toModelRegister(userEntity);
+        return toModel(userEntity);
+    }
+
+    @Override
+    public UserModel updateUser(UserModel userModel) {
+        return toModel(userJpaRepository.save(toEntity(userModel)));
     }
 
     private RoleModel toRoleModel(RoleEntity roleEntity){
@@ -101,13 +93,14 @@ public class DefaultUserRepository implements UserRepository {
         return roleModel;
     }
 
-    private UserModel toModelRegister(UserEntity userEntity){
-        UserModel userModel = new UserModel();
-        userModel.setFirstName(userEntity.getFirstName());
-        userModel.setLastName(userEntity.getLastName());
-        userModel.setEmail(userEntity.getEmail());
-        userModel.setPassword(userEntity.getPassword());
-        userModel.setIdRole(toRoleModel(userEntity.getRoleId()));
-        return userModel;
+    private UserEntity toEntity(UserModel userModel){
+        UserEntity userEntity  = userJpaRepository.findById(userModel.getIdUser()).get();
+        userEntity.setEmail(userModel.getEmail());
+        userEntity.setFirstName(userModel.getFirstName());
+        userEntity.setLastName(userModel.getLastName());
+        userEntity.setPassword(userModel.getPassword());
+        userEntity.setPhoto(userModel.getPhoto());
+        userEntity.setUpdatedAt(userModel.getUpdatedAt());
+        return userEntity;
     }
 }

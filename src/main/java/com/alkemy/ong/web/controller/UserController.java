@@ -3,6 +3,7 @@ package com.alkemy.ong.web.controller;
 import com.alkemy.ong.domain.users.UserModel;
 import com.alkemy.ong.domain.users.UserService;
 import com.alkemy.ong.domain.utils.Jwt;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,18 +28,13 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserModel>> getUsers(){
-        try {
-            List<UserModel> users = userService.getUsers();
-            return new ResponseEntity<>(users, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return ResponseEntity.ok(userService.getUsers());
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long idUser, @Valid @RequestBody UserModel userModel) {
+    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long idUser, @Valid @RequestBody UserDto userDto) {
         checkExistence(idUser);
-        return new ResponseEntity<>(toDto(userService.updateUser(userModel)), HttpStatus.OK);
+        return ResponseEntity.ok(toDto(userService.updateUser(toModel(userDto))));
     }
 
     @DeleteMapping("/{id}")
@@ -49,18 +44,18 @@ public class UserController {
     }
 
     @PostMapping("/auth/register")
-    public ResponseEntity<Jwt> registerUserAccount(@Valid @RequestBody UserModel userModel){
-        return new ResponseEntity<>(userService.registerUserAccount(userModel), HttpStatus.OK);
+    public ResponseEntity<Jwt> registerUserAccount(@Valid @RequestBody UserRegisterDto userRegisterDto){
+        return ResponseEntity.ok(userService.registerUserAccount(toModelRegister(userRegisterDto)));
     }
 
     @PostMapping("/auth/login")
-    public ResponseEntity<ResponseDtoLogin> loginUser(@Valid @RequestBody UserModel userModel){
-        return new ResponseEntity<>(toDtoLogin(userService.loginUser(userModel)),HttpStatus.OK);
+    public ResponseEntity<UserDtoLogin> loginUser(@Valid @RequestBody LoginDto loginDto){
+       return ResponseEntity.ok(toDtoLogin(userService.loginUser(toModelLogin(loginDto))));
     }
 
     @GetMapping("/auth/me")
     public ResponseEntity<ProfileDto> profile(){
-        return new ResponseEntity<>(toDtoProfile(userService.profile()),HttpStatus.OK);
+        return ResponseEntity.ok(toDtoProfile(userService.profile()));
     }
 
     private void checkExistence(Long id) {
@@ -69,113 +64,121 @@ public class UserController {
 
     @Data
     @AllArgsConstructor
-    private class ResponseDtoLogin{
-
-        @NotEmpty(message = "Name field is required")
-        private String firstName;
-
-        @NotEmpty(message = "Last Name field is required")
-        private String lastName;
-
+    private static class LoginDto{
+        @ApiModelProperty(required = true)
         @Email(message = "Email should be valid")
         private String email;
 
+        @ApiModelProperty(required = true)
         @Size(min = 4, max = 8, message = "password must be between 4 and 8 characters")
         private String password;
+    }
 
-        private String role;
+    private UserModel toModelLogin(LoginDto loginDto){
+        UserModel user = new UserModel();
+        user.setEmail(loginDto.getEmail());
+        user.setPassword(loginDto.getPassword());
+        return user;
     }
 
     @Data
-    @AllArgsConstructor
     private class ProfileDto{
-
-        @NotEmpty(message = "Name field is required")
         private String firstName;
-
-        @NotEmpty(message = "Last Name field is required")
         private String lastName;
-
-        @Email(message = "Email should be valid")
         private String email;
-
         private String photo;
     }
 
     private ProfileDto toDtoProfile(UserModel userModel){
-        return new ProfileDto(
-                userModel.getFirstName(),
-                userModel.getLastName(),
-                userModel.getEmail(),
-                userModel.getPhoto()
-        );
-    }
-
-    private ResponseDtoLogin toDtoLogin(UserModel userModel){
-        return new ResponseDtoLogin(
-                userModel.getFirstName(),
-                userModel.getLastName(),
-                userModel.getEmail(),
-                userModel.getPassword(),
-                userModel.getIdRole().getName()
-        );
+        ProfileDto profile = new ProfileDto();
+        profile.setFirstName(userModel.getFirstName());
+        profile.setLastName( userModel.getLastName());
+        profile.setEmail( userModel.getEmail());
+        profile.setPhoto( userModel.getPhoto());
+        return profile;
     }
 
     @Data
-    @AllArgsConstructor
-    private class UserDto{
-        private Long idUser;
-
-        @NotEmpty(message = "Name field is required")
+    private static class UserRegisterDto{
+        @ApiModelProperty(required = true)
+        @NotBlank(message = "Name field is required")
         private String firstName;
 
-        @NotEmpty(message = "Last Name field is required")
+        @ApiModelProperty(required = true)
+        @NotBlank(message = "Name field is required")
         private String lastName;
 
+        @ApiModelProperty(required = true)
         @Email(message = "Email should be valid")
         private String email;
 
+        @ApiModelProperty(required = true)
         @Size(min = 4, max = 8, message = "password must be between 4 and 8 characters")
         private String password;
+    }
 
+    private UserModel toModelRegister(UserRegisterDto userRegisterDto){
+        UserModel user = new UserModel();
+        user.setFirstName(userRegisterDto.getFirstName());
+        user.setLastName(userRegisterDto.getLastName());
+        user.setEmail(userRegisterDto.getEmail());
+        user.setPassword(userRegisterDto.getPassword());
+        return user;
+    }
+
+    @Data
+    private static class UserDto{
+        private Long idUser;
+        private String firstName;
+        private String lastName;
+        private String email;
+        private String password;
         private String photo;
         private LocalDateTime updatedAt;
-        private Long idRole;
     }
 
     @Data
-    @AllArgsConstructor
-    private class UserRegisterDto{
-        @NotBlank(message = "Name field is required")
+    private static class UserDtoLogin{
+        private Long idUser;
         private String firstName;
-
-        @NotBlank(message = "Name field is required")
         private String lastName;
-
-        @Email(message = "Email should be valid")
         private String email;
-
-        @Size(min = 4, max = 8, message = "password must be between 4 and 8 characters")
         private String password;
+        private String role;
+    }
+
+    private UserDtoLogin toDtoLogin(UserModel userModel){
+        UserDtoLogin user = new UserDtoLogin();
+        user.setIdUser(userModel.getIdUser());
+        user.setFirstName(userModel.getFirstName());
+        user.setLastName(userModel.getLastName());
+        user.setEmail(userModel.getEmail());
+        user.setPassword(userModel.getPassword());
+        user.setRole(userModel.getIdRole().getName());
+        return user;
+    }
+
+    private UserModel toModel(UserDto userDto){
+        UserModel user = new UserModel();
+        user.setIdUser(userDto.getIdUser());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(userDto.getPassword());
+        user.setUpdatedAt(userDto.getUpdatedAt());
+        user.setPhoto(userDto.getPhoto());
+        return user;
     }
 
     private UserDto toDto(UserModel userModel){
-        return new UserDto(
-                userModel.getIdUser(),
-                userModel.getFirstName(),
-                userModel.getLastName(),
-                userModel.getEmail(),
-                userModel.getPassword(),
-                userModel.getPhoto(),
-                userModel.getUpdatedAt(),
-                userModel.getIdRole().getIdRole());
-    }
-
-    private UserRegisterDto toRegisterDto(UserModel userModel){
-        return new UserRegisterDto(
-                userModel.getFirstName(),
-                userModel.getLastName(),
-                userModel.getEmail(),
-                userModel.getPassword());
+        UserDto userDto = new UserDto();
+        userDto.setIdUser(userModel.getIdUser());
+        userDto.setFirstName(userModel.getFirstName());
+        userDto.setLastName(userModel.getLastName());
+        userDto.setEmail(userModel.getEmail());
+        userDto.setPassword(userModel.getPassword());
+        userDto.setPhoto(userModel.getPhoto());
+        userDto.setUpdatedAt(userModel.getUpdatedAt());
+        return userDto;
     }
 }

@@ -8,14 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 public class DefaultUserService implements UserService {
@@ -38,10 +35,8 @@ public class DefaultUserService implements UserService {
     }
 
     public UserModel updateUser(UserModel userModel) {
-        Optional<UserModel> user = userRepository.getUserById(userModel.getIdUser());
-        if (user.isEmpty()) {
-            throw  new DomainException("User not found with id: " + userModel.getIdUser());
-        }
+       userRepository.getUserById(userModel.getIdUser())
+                .orElseThrow(() -> new DomainException("User not found with id: " + userModel.getIdUser()));
         return userRepository.updateUser(userModel);
     }
 
@@ -61,55 +56,43 @@ public class DefaultUserService implements UserService {
     }
 
     public void deleteUser(long idUser) {
-        Optional<UserModel> user = userRepository.getUserById(idUser);
-        if (user.isEmpty()) {
-            throw new DomainException("User not found with id: " + idUser);
-        }else userRepository.deleteUser(idUser);
+       userRepository.getUserById(idUser)
+                        .orElseThrow(() -> new DomainException("User not found with id: " + idUser));
+       userRepository.deleteUser(idUser);
     }
 
     public UserModel loginUser(UserModel userModel){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userModel.getEmail(), userModel.getPassword()));
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
         DefaultUserDetails userDetails = (DefaultUserDetails) authentication.getPrincipal();
-
-        List<String> roles = userDetails.getAuthorities().stream()
-                                        .map(item -> item.getAuthority())
-                                        .collect(Collectors.toList());
-
-        RoleModel roleModel = roleRepository.findByName(roles.get(0));
-        UserModel user = new UserModel(
-                                        userDetails.getFirstName(),
-                                        userDetails.getLastName(),
-                                        userDetails.getEmail(),
-                                        userDetails.getPassword(),
-                                        roleModel
-                                        );
-        return user;
+        return setUser(userDetails);
     }
 
     @Override
     public UserModel getUserById(Long id) {
-        return userRepository.getUserById(id).orElseThrow(DomainException::new);
+        return userRepository.getUserById(id)
+                .orElseThrow(() -> new DomainException("User not found with id: " + id));
     }
 
     public UserModel profile(){
         DefaultUserDetails userDetails =
                 (DefaultUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return setUser(userDetails);
+    }
 
+    public UserModel setUser(DefaultUserDetails userDetails){
         List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(toList());
-
+                                                         .map(item -> item.getAuthority())
+                                                         .collect(Collectors.toList());
         RoleModel roleModel = roleRepository.findByName(roles.get(0));
-
-        UserModel user = new UserModel(
-                userDetails.getFirstName(),
-                userDetails.getLastName(),
-                userDetails.getEmail(),
-                userDetails.getPassword(),
-                roleModel);
+        UserModel user = new UserModel();
+        user.setIdUser(userDetails.getIdUser());
+        user.setFirstName(userDetails.getFirstName());
+        user.setLastName(userDetails.getLastName());
+        user.setEmail(userDetails.getEmail());
+        user.setPassword(userDetails.getPassword());
+        user.setIdRole(roleModel);
         return user;
     }
 }

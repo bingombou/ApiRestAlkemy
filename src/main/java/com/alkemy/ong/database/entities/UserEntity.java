@@ -6,7 +6,6 @@ import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @Data
@@ -24,7 +23,7 @@ public class UserEntity {
     @Column(name = "lastName", length = 30, nullable = false)
     private String lastName;
 
-    @Column(name = "email", length = 30, nullable = false, unique = true)
+    @Column(name = "email", length = 40, nullable = false, unique = true)
     private String email;
 
     @Column(name = "password", length = 100, nullable = false)

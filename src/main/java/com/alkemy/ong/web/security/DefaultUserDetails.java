@@ -10,13 +10,15 @@ import java.util.List;
 
 public class DefaultUserDetails implements UserDetails {
     private static final long serialVersionUID = 1L;
+    private Long idUser;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public DefaultUserDetails(String firstName, String lastName, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public DefaultUserDetails(Long idUser, String firstName, String lastName, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+        this.idUser = idUser;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -27,6 +29,7 @@ public class DefaultUserDetails implements UserDetails {
     public static DefaultUserDetails build(UserModel user) {
         List<GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority(user.getIdRole().getName()));
         return new DefaultUserDetails(
+                    user.getIdUser(),
                     user.getFirstName(),
                     user.getLastName(),
                     user.getEmail(),
@@ -37,6 +40,10 @@ public class DefaultUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
+    }
+
+    public Long getIdUser() {
+        return idUser;
     }
 
     @Override
