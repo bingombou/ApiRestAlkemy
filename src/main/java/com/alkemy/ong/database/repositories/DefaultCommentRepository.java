@@ -5,10 +5,10 @@ import com.alkemy.ong.database.jparepositories.CommentJpaRepository;
 import com.alkemy.ong.domain.comments.CommentModel;
 import com.alkemy.ong.domain.comments.CommentsRepository;
 import org.springframework.stereotype.Repository;
-
 import java.time.LocalDateTime;
+import java.util.List;
+import static java.util.stream.Collectors.toList;
 import java.util.Optional;
-
 
 @Repository
 public class DefaultCommentRepository implements CommentsRepository {
@@ -32,6 +32,14 @@ public class DefaultCommentRepository implements CommentsRepository {
     @Override
     public Optional<CommentModel> findById(CommentModel comment) {
         return jpaRepository.findById(comment.getId()).map(this::toModel);
+    }
+
+    @Override
+    public List<CommentModel> getAllOrdered() {
+        return  jpaRepository.getAllByOrderByCreatedAtDesc()
+                .stream()
+                .map(this::toModel)
+                .collect(toList());
     }
 
     private CommentEntity createModelEntity(CommentModel commentModel) {

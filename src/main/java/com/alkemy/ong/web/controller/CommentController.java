@@ -2,16 +2,15 @@ package com.alkemy.ong.web.controller;
 
 import com.alkemy.ong.domain.comments.CommentModel;
 import com.alkemy.ong.domain.comments.CommentService;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @RestController
 @RequestMapping("/comments")
@@ -32,6 +31,11 @@ public class CommentController {
     public ResponseEntity<CommentSimpleDto> deleteComment(@Valid @RequestBody CommentSimpleDto commentSimpleDto) {
         commentService.deleteComment(toModel(commentSimpleDto));
         return new ResponseEntity<>(commentSimpleDto, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<String>> getAllOrdered() {
+        return ResponseEntity.ok(commentService.getAllBodiesOrdered());
     }
 
     private CommentModel toModel(CommentDto commentDto) {

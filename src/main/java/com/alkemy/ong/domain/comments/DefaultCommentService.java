@@ -5,6 +5,8 @@ import com.alkemy.ong.domain.users.UserModel;
 import com.alkemy.ong.domain.users.UserRepository;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import java.util.List;
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class DefaultCommentService implements CommentService {
@@ -23,6 +25,13 @@ public class DefaultCommentService implements CommentService {
         return commentsRepository.createComment(commentModel);
     }
 
+    @Override
+    public List<String> getAllBodiesOrdered() {
+        return commentsRepository.getAllOrdered()
+                .stream()
+                .map(c -> c.getBody())
+                .collect(toList());
+    }
 
     @Override
     public void deleteComment(CommentModel comment) {
@@ -47,4 +56,6 @@ public class DefaultCommentService implements CommentService {
     private void checkIfExistUser(CommentModel commentModel) {
         UserModel user = userRepository.getUserById(commentModel.getIdUser()).orElseThrow(DomainException::new);
     }
+
+
 }
