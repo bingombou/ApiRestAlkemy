@@ -5,6 +5,7 @@ import com.alkemy.ong.database.jparepositories.SlideJpaRepository;
 import com.alkemy.ong.domain.slides.SlideModel;
 import com.alkemy.ong.domain.slides.SlideRepository;
 import org.springframework.stereotype.Repository;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import static java.util.stream.Collectors.toList;
@@ -21,7 +22,7 @@ public class DefaultSlideRepository implements SlideRepository {
         return new SlideModel(
                 entity.getId(),
                 entity.getIdOrganization(),
-                entity.getOrder(),
+                entity.getOrdinalNumber(),
                 entity.getText(),
                 entity.getImageUrl(),
                 entity.isDeleted(),
@@ -34,7 +35,7 @@ public class DefaultSlideRepository implements SlideRepository {
         final SlideEntity slideEntity = new SlideEntity();
         slideEntity.setId(model.getId());
         slideEntity.setIdOrganization(model.getIdOrganization());
-        slideEntity.setOrder(model.getOrder());
+        slideEntity.setOrdinalNumber(model.getOrder());
         slideEntity.setImageUrl(model.getImageUrl());
         slideEntity.setText(model.getText());
         slideEntity.setDeleted(model.isDeleted());
@@ -74,5 +75,22 @@ public class DefaultSlideRepository implements SlideRepository {
                 .stream()
                 .map(this::toModel)
                 .collect(toList());
+    }
+
+    @Override
+    public int getNextOrdinalNumber(int idOrg) {
+        return repository.getAllByIdOrganization(idOrg).size()+ 1;
+    }
+
+    @Override
+    public SlideModel create(SlideModel model) {
+        SlideEntity entity = new SlideEntity();
+        entity.setIdOrganization(model.getIdOrganization());
+        entity.setOrdinalNumber(model.getOrder());
+        entity.setText(model.getText());
+        entity.setImageUrl(model.getImageUrl());
+        entity.setCreatedAt(LocalDateTime.now());
+        entity.setUpdatedAt(LocalDateTime.now());
+        return toModel(repository.save(entity));
     }
 }

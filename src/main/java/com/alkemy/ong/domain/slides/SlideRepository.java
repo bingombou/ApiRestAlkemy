@@ -9,4 +9,6 @@ public interface SlideRepository {
     SlideModel update(SlideModel slide);
     void delete(SlideModel id);
     List<SlideModel> getAllByOrgId(int orgId);
+    int getNextOrdinalNumber(int org);
+    SlideModel create(SlideModel slide);
 }

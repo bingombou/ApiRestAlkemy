@@ -20,7 +20,7 @@ public class SlideEntity implements Serializable {
     private int idOrganization;
 
     @Column(name = "ordinalsNumber")
-    private int order;
+    private int ordinalNumber;
 
     @Column(name = "text")
     private String text;

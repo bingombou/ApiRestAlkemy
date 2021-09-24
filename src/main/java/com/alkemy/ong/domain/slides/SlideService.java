@@ -8,4 +8,5 @@ public interface SlideService {
     SlideModel update(SlideModel slide);
     void delete(int id);
     List<SlideModel> getAllByOrgIdOrdered(int orgId);
+    SlideModel create(SlideModel slide);
 }

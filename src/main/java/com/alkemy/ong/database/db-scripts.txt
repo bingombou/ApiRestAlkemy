@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS Slide(idSlide INT NOT NULL AUTO_INCREMENT PRIMARY KEY
     					idOrganization INT NOT NULL,
                         ordinalsNumber INT NOT NULL,
                         imageUrl VARCHAR(255) NOT NULL,
-                        deleted boolean  NOT NULL,
+                        deleted boolean NOT NULL DEFAULT FALSE,
                         createdAt timestamp  NOT NULL,
                         updatedAt timestamp  NOT NULL,
                         text VARCHAR(140),

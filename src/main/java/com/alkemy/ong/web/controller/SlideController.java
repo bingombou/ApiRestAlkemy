@@ -5,10 +5,10 @@ import com.alkemy.ong.domain.slides.SlideService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
 import static java.util.stream.Collectors.toList;
 
 @RestController
@@ -44,11 +44,16 @@ public class SlideController {
     }
 
     @GetMapping("slide/{orgId}")
-    public ResponseEntity<?> getAllByOrgId(@PathVariable("orgId") Integer orgId) {
+    public ResponseEntity<List<FullSlideDTO>> getAllByOrgId(@PathVariable("orgId") Integer orgId) {
         return ResponseEntity.ok(service.getAllByOrgIdOrdered(orgId)
                 .stream()
                 .map(this::toFullSlideDTO)
                 .collect(toList()));
+    }
+
+    @PostMapping("admin/slide")
+    public ResponseEntity<FullSlideDTO> create(@RequestBody SlideModel slide) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(toFullSlideDTO(service.create(slide)));
     }
 
     private SlideDTO toDTO(SlideModel slideModel) {
