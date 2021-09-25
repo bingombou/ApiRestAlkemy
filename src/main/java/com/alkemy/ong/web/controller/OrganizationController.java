@@ -44,10 +44,6 @@ public class OrganizationController {
     static class OrganizationDTO {
         @JsonIgnore
         private int id;
-        private String name;
-        private String image;
-        private int phone;
-        private String address;
         private String urlFacebook;
         private String urlLinkedin;
         private String urlInstagram;
@@ -71,10 +67,6 @@ public class OrganizationController {
     private OrganizationDTO toDTO(OrganizationModel organizationModel) {
         return new OrganizationDTO(
                 organizationModel.getId(),
-                organizationModel.getName(),
-                organizationModel.getImage(),
-                organizationModel.getPhone(),
-                organizationModel.getAddress(),
                 organizationModel.getUrlFacebook(),
                 organizationModel.getUrlLinkedin(),
                 organizationModel.getUrlInstagram());
@@ -82,11 +74,7 @@ public class OrganizationController {
 
     public OrganizationModel toModel(OrganizationDTO organizationDto) {
         OrganizationModel organizationModel = new OrganizationModel();
-        organizationModel.setId(organizationDto.getId());
-        organizationModel.setName(organizationDto.getName());
-        organizationModel.setImage(organizationDto.getImage());
-        organizationModel.setPhone(organizationDto.getPhone());
-        organizationModel.setAddress(organizationDto.getAddress());
+       organizationModel.setId(organizationDto.getId());
         organizationModel.setUrlFacebook(organizationDto.getUrlFacebook());
         organizationModel.setUrlLinkedin(organizationDto.getUrlLinkedin());
         organizationModel.setUrlInstagram(organizationDto.getUrlInstagram());

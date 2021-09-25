@@ -7,8 +7,8 @@ import com.alkemy.ong.domain.comments.CommentsRepository;
 import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
-import static java.util.stream.Collectors.toList;
 import java.util.Optional;
+import static java.util.stream.Collectors.toList;
 
 @Repository
 public class DefaultCommentRepository implements CommentsRepository {
@@ -36,7 +36,7 @@ public class DefaultCommentRepository implements CommentsRepository {
 
     @Override
     public List<CommentModel> getAllOrdered() {
-        return  jpaRepository.getAllByOrderByCreatedAtDesc()
+        return jpaRepository.getAllByOrderByCreatedAtDesc()
                 .stream()
                 .map(this::toModel)
                 .collect(toList());
@@ -52,9 +52,16 @@ public class DefaultCommentRepository implements CommentsRepository {
         return commentEntity;
     }
 
+    @Override
+    public List<CommentModel> findByNewsId(int id) {
+        return jpaRepository.findByIdNews(id)
+                .stream()
+                .map(this::toModel)
+                .collect(toList());
+    }
+
     private CommentEntity toEntity(CommentModel commentModel) {
         CommentEntity commentEntity = new CommentEntity();
-        commentEntity.setId(commentModel.getId());
         commentEntity.setBody(commentModel.getBody());
         commentEntity.setIdNews(commentModel.getIdNews());
         commentEntity.setIdUser(commentModel.getIdUser());

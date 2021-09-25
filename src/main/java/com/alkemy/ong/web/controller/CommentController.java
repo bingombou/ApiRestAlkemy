@@ -6,11 +6,14 @@ import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/comments")
@@ -25,6 +28,15 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<CommentDto> createComment(@Valid @RequestBody CommentDto commentDto) {
         return new ResponseEntity<>(toDto(commentService.createComment(toModel(commentDto))), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/posts/{id}/comments")
+    public ResponseEntity<List<CommentDto>> getCommentByIdOfNews(@Valid @PathVariable("id") int id) {
+        return new ResponseEntity<>(commentService.getCommentByIdOfNews(id)
+                .stream()
+                .map(this::toDto)
+                .collect(toList())
+                , HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -63,7 +75,7 @@ public class CommentController {
     }
 
     @Data
-    private static class CommentDto {
+    private class CommentDto {
         private int id;
         @NotNull
         @Min(value = 1, message = "Field idUser required or requires a number greater than zero ")

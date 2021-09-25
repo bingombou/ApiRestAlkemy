@@ -58,4 +58,9 @@ public class DefaultCommentService implements CommentService {
     }
 
 
+
+    @Override
+    public List<CommentModel> getCommentByIdOfNews(int id) {
+        return commentsRepository.findByNewsId(id);
+    }
 }
