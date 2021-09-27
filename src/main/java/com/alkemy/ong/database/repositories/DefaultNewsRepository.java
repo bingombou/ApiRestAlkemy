@@ -5,7 +5,6 @@ import com.alkemy.ong.database.jparepositories.NewsJPARepository;
 import com.alkemy.ong.domain.news.NewsModel;
 import com.alkemy.ong.domain.news.NewsRepository;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,15 +27,22 @@ public class DefaultNewsRepository implements NewsRepository {
     }
 
     @Override
-    public Optional<NewsEntity> findById(Long id) {
-        return newsRepository.findById(id);
+    public Optional<NewsModel> findById(Long id) {
+        return newsRepository.findById(id)
+                .map(this::toModel);
     }
-
 
     public NewsModel createNews(NewsModel news) {
         newsRepository.save(this.toEntity(news));
         return news;
     }
+
+    @Override
+    public void delete(NewsModel news) {
+        newsRepository.delete(toEntity(news));
+    }
+
+
     private NewsEntity toEntity(NewsModel newsModel) {
         NewsEntity news = new NewsEntity();
         news.setId(newsModel.getId());
@@ -51,12 +57,11 @@ public class DefaultNewsRepository implements NewsRepository {
 
     private NewsModel toModel(NewsEntity newsEntity) {
         NewsModel newsModel = new NewsModel();
+        newsModel.setId(newsEntity.getId());
         newsModel.setName(newsEntity.getName());
         newsModel.setContent(newsEntity.getContent());
         newsModel.setImage(newsEntity.getImage());
 
         return newsModel;
     }
-
-
 }

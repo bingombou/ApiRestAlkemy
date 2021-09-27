@@ -1,9 +1,6 @@
 package com.alkemy.ong.domain.news;
 
-
 import lombok.Data;
-
-
 import java.time.LocalDateTime;
 
 @Data

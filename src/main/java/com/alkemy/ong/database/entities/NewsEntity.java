@@ -2,7 +2,6 @@ package com.alkemy.ong.database.entities;
 
 import lombok.Data;
 import org.hibernate.annotations.*;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.*;
@@ -12,9 +11,6 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name ="news")
-@SQLDelete(sql = "UPDATE news SET deleted = true WHERE id =?")
-@FilterDef(name = "deletedNewsFilter", parameters = @ParamDef(name = "isDeleted", type = "boolean"))
-@Filter(name = "deletedProductFilter", condition = "deleted =isDeleted")
 public class NewsEntity{
 
     @Id
