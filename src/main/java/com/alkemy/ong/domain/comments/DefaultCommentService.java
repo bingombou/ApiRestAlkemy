@@ -50,17 +50,30 @@ public class DefaultCommentService implements CommentService {
     }
 
     private void checkIfExistComment(CommentModel commentModel) {
-        CommentModel comment = commentsRepository.findById(commentModel).orElseThrow(DomainException::new);
+        CommentModel comment = commentsRepository.findById(commentModel.getId()).orElseThrow(DomainException::new);
     }
 
     private void checkIfExistUser(CommentModel commentModel) {
         UserModel user = userRepository.getUserById(commentModel.getIdUser()).orElseThrow(DomainException::new);
     }
 
+    @Override
+    public CommentModel updateComment(CommentModel commentModel) {
+        return commentsRepository.updateComment(commentModel);
+    }
 
 
     @Override
     public List<CommentModel> getCommentByIdOfNews(int id) {
         return commentsRepository.findByNewsId(id);
+    }
+    @Override
+    public CommentModel findById(int id) {
+        return commentsRepository.findById(id).orElseThrow(DomainException::new);
+    }
+
+    @Override
+    public List<CommentModel> getAll() {
+        return commentsRepository.findAll();
     }
 }

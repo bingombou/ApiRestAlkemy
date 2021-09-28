@@ -4,13 +4,18 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommentsRepository {
+    CommentModel createComment(CommentModel commentModel);
+
+    CommentModel updateComment(CommentModel comment);
+
     void deleteComment(CommentModel comment);
 
-    Optional<CommentModel> findById(CommentModel comment);
+    Optional<CommentModel> findById(int ind);
 
-    CommentModel createComment(CommentModel commentModel);
+    List<CommentModel> findAll();
 
     List<CommentModel> getAllOrdered();
 
     List<CommentModel> findByNewsId(int id);
+
 }
