@@ -2,13 +2,16 @@ package com.alkemy.ong.web.controller;
 
 import com.alkemy.ong.domain.news.NewsModel;
 import com.alkemy.ong.domain.news.NewsService;
+import com.alkemy.ong.domain.utils.Page;
 import com.alkemy.ong.web.dto.NewsDto;
+import com.alkemy.ong.web.dto.PageDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
+
+import static com.alkemy.ong.commons.PageUtils.toPageDto;
 
 @RestController
 @RequestMapping(path = "/news")
@@ -21,9 +24,11 @@ public class NewsController {
     }
 
     @GetMapping
-    public ResponseEntity<List<NewsDto>> getNews() {
-        List<NewsDto> result = newsService.getNews().stream().map(m -> toDto(m)).collect(Collectors.toList());
-        return new ResponseEntity<List<NewsDto>>(result, HttpStatus.OK);
+    public ResponseEntity<PageDto> getNews(@RequestParam("page") int page) {
+        //List<NewsDto> result = newsService.getNews().stream().map(m -> toDto(m)).collect(Collectors.toList());
+        Page<NewsModel> news = newsService.getNews(page);
+
+        return new ResponseEntity<PageDto>(toPageDto(news, "news"), HttpStatus.OK);
     }
 
 

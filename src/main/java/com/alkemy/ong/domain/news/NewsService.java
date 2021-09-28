@@ -1,9 +1,9 @@
 package com.alkemy.ong.domain.news;
 
-import java.util.List;
+import com.alkemy.ong.domain.utils.Page;
 
 public interface NewsService {
-     List<NewsModel> getNews();
+     Page<NewsModel> getNews(int page);
      NewsModel createNews (NewsModel news);
      NewsModel getNewsById(Long id);
      NewsModel updateNews(NewsModel news);

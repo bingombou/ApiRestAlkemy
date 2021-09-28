@@ -1,14 +1,20 @@
 package com.alkemy.ong.database.repositories;
 
 import com.alkemy.ong.database.entities.NewsEntity;
+import com.alkemy.ong.database.exceptions.DomainException;
 import com.alkemy.ong.database.jparepositories.NewsJPARepository;
 import com.alkemy.ong.database.exceptions.DomainException;
 import com.alkemy.ong.domain.news.NewsModel;
 import com.alkemy.ong.domain.news.NewsRepository;
+import com.alkemy.ong.domain.utils.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import java.util.List;
+
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import static com.alkemy.ong.commons.PageUtils.DEFAULT_PAGE_SIZE;
+import static java.util.stream.Collectors.toList;
 
 @Repository
 public class DefaultNewsRepository implements NewsRepository {
@@ -20,11 +26,11 @@ public class DefaultNewsRepository implements NewsRepository {
     }
 
     @Override
-    public List<NewsModel> getNews() {
-        List<NewsEntity> news = newsRepository.findAll();
-        return news.stream()
-                .map(o -> this.toModel(o))
-                .collect(Collectors.toList());
+    public Page<NewsModel> getNews(int page) {
+        Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
+        org.springframework.data.domain.Page<NewsEntity> news = newsRepository.findAll(pageable);
+
+        return toPage(news);
     }
 
     @Override
@@ -75,5 +81,15 @@ public class DefaultNewsRepository implements NewsRepository {
         newsModel.setImage(newsEntity.getImage());
 
         return newsModel;
+    }
+
+    private Page<NewsModel> toPage(org.springframework.data.domain.Page<NewsEntity> news) {
+        Page<NewsModel> page = new Page<>();
+        page.setContent(news.getContent().stream()
+                .map(this::toModel).collect(toList()));
+        page.setHasNextPage(news.hasNext());
+        page.setHasPreviousPage(news.hasPrevious());
+        page.setCurrentPage(news.getPageable().getPageNumber());
+        return page;
     }
 }
