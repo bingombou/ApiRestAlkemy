@@ -36,7 +36,7 @@ public class NewsController {
     public ResponseEntity<NewsDto> updateNews(@Valid @RequestBody NewsModel news) {
         newsService.updateNews(news);
 
-        NewsDto newsDto = new NewsDto(news.getId(), news.getName(), news.getContent(),
+        NewsDto newsDto = new NewsDto(news.getId(),news.getIdCategory(), news.getName(), news.getContent(),
                 news.getImage(), news.getCreatedAt(), news.getUpdatedAt());
 
         return new ResponseEntity<NewsDto>(newsDto, HttpStatus.OK);
@@ -49,19 +49,20 @@ public class NewsController {
     }
 
     private NewsDto toDto(NewsModel news) {
-        return new NewsDto(news.getId(), news.getName(), news.getImage(), news.getContent(),
+        return new NewsDto(news.getId(), news.getIdCategory(),news.getName(), news.getImage(), news.getContent(),
                 news.isDeleted(), news.getCreatedAt(), news.getUpdatedAt());
     }
 
-    private NewsModel toModel(NewsDto mm) {
+    private NewsModel toModel(NewsDto dto) {
         NewsModel news = new NewsModel();
-        news.setId(mm.getId());
-        news.setName(mm.getName());
-        news.setContent(mm.getContent());
-        news.setImage(mm.getImage());
-        news.setDeleted(mm.isDeleted());
-        news.setCreatedAt(mm.getCreatedAt());
-        news.setUpdatedAt(mm.getUpdatedAt());
+        news.setId(dto.getId());
+        news.setIdCategory(dto.getIdCategory());
+        news.setName(dto.getName());
+        news.setContent(dto.getContent());
+        news.setImage(dto.getImage());
+        news.setDeleted(dto.isDeleted());
+        news.setCreatedAt(dto.getCreatedAt());
+        news.setUpdatedAt(dto.getUpdatedAt());
 
         return news;
     }

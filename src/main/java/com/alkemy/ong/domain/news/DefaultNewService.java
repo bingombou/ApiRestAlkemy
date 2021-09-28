@@ -1,10 +1,12 @@
 package com.alkemy.ong.domain.news;
 
 import com.alkemy.ong.database.entities.NewsEntity;
-import com.alkemy.ong.domain.exceptions.DomainException;
+import com.alkemy.ong.database.exceptions.DomainException;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DefaultNewService implements NewsService {
@@ -42,7 +44,9 @@ public class DefaultNewService implements NewsService {
 
     @Override
     public NewsModel updateNews(NewsModel news) {
-        return null;
+        Optional<NewsModel> result = newsRepository.findById(news.getId());
+        newsRepository.updateNews(news);
+        return result.orElseThrow(DomainException::new);
     }
 
     @Override
