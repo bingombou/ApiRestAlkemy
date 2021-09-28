@@ -5,8 +5,11 @@ import com.alkemy.ong.domain.news.NewsService;
 import com.alkemy.ong.domain.utils.Page;
 import com.alkemy.ong.web.dto.NewsDto;
 import com.alkemy.ong.web.dto.PageDto;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,7 +34,8 @@ public class NewsController {
         return new ResponseEntity<PageDto>(toPageDto(news, "news"), HttpStatus.OK);
     }
 
-
+    @ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+    @PreAuthorize("hasAuthority('Admin')")
     @PostMapping
     public ResponseEntity<NewsDto> createNews(@Valid @RequestBody NewsDto news) {
         return new ResponseEntity<NewsDto>(this.toDto(newsService.createNews(toModel(news))), HttpStatus.CREATED);

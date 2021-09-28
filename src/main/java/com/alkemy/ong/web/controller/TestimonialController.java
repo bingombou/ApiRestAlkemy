@@ -4,8 +4,11 @@ import com.alkemy.ong.domain.testimonials.TestimonialModel;
 import com.alkemy.ong.domain.testimonials.TestimonialService;
 import com.alkemy.ong.domain.utils.Page;
 import com.alkemy.ong.web.dto.PageDto;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import static com.alkemy.ong.commons.PageUtils.toPageDto;
 
@@ -19,16 +22,22 @@ public class TestimonialController {
         this.testimonialService = testimonialService;
     }
 
+    @ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+    @PreAuthorize("hasAuthority('Admin')")
     @PostMapping
     public ResponseEntity<TestimonialModel> create(@RequestBody TestimonialModel testimonialModel){
         return ResponseEntity.status(HttpStatus.CREATED).body(testimonialService.save(testimonialModel));
     }
 
+    @ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+    @PreAuthorize("hasAuthority('Admin')")
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody TestimonialModel testimonialModel, @PathVariable(value = "id") Long testimonialId){
         return ResponseEntity.ok(testimonialService.update(testimonialModel, testimonialId));
     }
 
+    @ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+    @PreAuthorize("hasAuthority('Admin')")
     @DeleteMapping ("/{id}")
     public ResponseEntity<?> delete(@PathVariable (value = "id") Long testimonialId){
         testimonialService.deleteById(testimonialId);

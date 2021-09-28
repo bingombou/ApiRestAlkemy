@@ -6,8 +6,11 @@ import com.alkemy.ong.domain.members.MemberService;
 import com.alkemy.ong.domain.utils.Page;
 import com.alkemy.ong.web.dto.MemberDto;
 import com.alkemy.ong.web.dto.PageDto;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,6 +27,8 @@ public class MemberController {
         this.memberService = memberService;
     }
 
+    @ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping
     public ResponseEntity<PageDto> getMembers(@RequestParam("page") int page){
         Page<MemberModel> members = memberService.getMembers(page);
@@ -55,6 +60,8 @@ public class MemberController {
         return member;
     }
 
+    @ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+    @PreAuthorize("hasAuthority('Admin')")
     @DeleteMapping(path = "{id}")
     public ResponseEntity<?> deleteMember(@PathVariable("id") Long id){
         memberService.deleteMember(id);

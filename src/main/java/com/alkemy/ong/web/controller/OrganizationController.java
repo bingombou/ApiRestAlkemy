@@ -2,10 +2,13 @@ package com.alkemy.ong.web.controller;
 
 import com.alkemy.ong.domain.organizations.OrganizationModel;
 import com.alkemy.ong.domain.organizations.OrganizationService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import net.minidev.json.annotate.JsonIgnore;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,8 +36,9 @@ public class OrganizationController {
                 .collect(toList());
     }
 
+    @ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+    @PreAuthorize("hasAuthority('Admin')")
     @PostMapping("/public")
-    //@PreAutorize(ROLE_ADIM)
     public ResponseEntity<OrganizationDTO> updatePublicData(@RequestBody OrganizationDTO dto) {
         return ResponseEntity.ok(toDTO(organizationService.update(toModel(dto))));
     }

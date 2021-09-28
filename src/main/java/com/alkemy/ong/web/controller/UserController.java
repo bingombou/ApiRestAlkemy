@@ -4,10 +4,13 @@ import com.alkemy.ong.domain.users.UserModel;
 import com.alkemy.ong.domain.users.UserService;
 import com.alkemy.ong.domain.utils.Jwt;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
@@ -26,6 +29,8 @@ public class UserController {
         this.userService = userService;
     }
 
+    @ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping
     public ResponseEntity<List<UserModel>> getUsers(){
         return ResponseEntity.ok(userService.getUsers());
