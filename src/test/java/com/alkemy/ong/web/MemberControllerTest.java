@@ -2,6 +2,7 @@ package com.alkemy.ong.web;
 
 import com.alkemy.ong.database.entities.MemberEntity;
 import com.alkemy.ong.database.jparepositories.MemberJPARepository;
+import com.alkemy.ong.web.dto.PageDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -10,6 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -40,12 +45,13 @@ public class MemberControllerTest {
 
     @Test
     public void getMembers() throws Exception {
-        when(repository.findAll()).thenReturn(singletonList(buildMemberEntity()));
-        mockMvc.perform(get("/members"))
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<MemberEntity> paginatedMembers = new PageImpl(singletonList(buildMemberEntity()), pageable, 1L);
+
+        when(repository.findAll(pageable)).thenReturn(paginatedMembers);
+        mockMvc.perform(get("/members?page=0"))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{\"id\":1,\"name\":\"Agustina\",\"facebookUrl\"" +
-                        ":\"facebook.com\"," + "\"instagramUrl\":\"instagram.com\",\"linkedinUrl\":\"linkedin.com\"," +
-                        "\"image\":\"image1.png\",\"description\":\"description\"}]"));
+                .andExpect(content().json(mapperConfig().writeValueAsString(buildPageDto())));
     }
 
     @Test
@@ -85,5 +91,16 @@ public class MemberControllerTest {
         member.setDescription("description");
 
         return member;
+    }
+
+    private PageDto buildPageDto(){
+
+        PageDto pageDto = new PageDto();
+        pageDto.setContent(singletonList(buildMemberEntity()));
+        pageDto.setPreviousPage(null);
+        pageDto.setNextPage(null);
+
+        return pageDto;
+
     }
 }
