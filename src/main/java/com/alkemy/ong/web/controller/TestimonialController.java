@@ -4,6 +4,7 @@ import com.alkemy.ong.domain.testimonials.TestimonialModel;
 import com.alkemy.ong.domain.testimonials.TestimonialService;
 import com.alkemy.ong.domain.utils.Page;
 import com.alkemy.ong.web.dto.PageDto;
+import com.alkemy.ong.web.dto.TestimonialDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,8 @@ public class TestimonialController {
     @ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
     @PreAuthorize("hasAuthority('Admin')")
     @PostMapping
-    public ResponseEntity<TestimonialModel> create(@RequestBody TestimonialModel testimonialModel){
-        return ResponseEntity.status(HttpStatus.CREATED).body(testimonialService.save(testimonialModel));
+    public ResponseEntity<TestimonialDto> create(@RequestBody TestimonialModel testimonialModel){
+        return ResponseEntity.status(HttpStatus.CREATED).body(toDto(testimonialService.save(testimonialModel)));
     }
 
     @ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
@@ -48,5 +49,16 @@ public class TestimonialController {
     public ResponseEntity<PageDto> findAll(@RequestParam int page){
         Page<TestimonialModel> testimonials = testimonialService.findAll(page);
         return ResponseEntity.ok(toPageDto(testimonials, "testimonials"));
+    }
+
+    public TestimonialDto toDto(TestimonialModel testimonialModel){
+        TestimonialDto testimonialDto = new TestimonialDto();
+        testimonialDto.setId(testimonialModel.getId());
+        testimonialDto.setName(testimonialModel.getName());
+        testimonialDto.setImage(testimonialModel.getImage());
+        testimonialDto.setContent(testimonialModel.getContent());
+        testimonialDto.setDeleted(testimonialModel.getDeleted());
+        testimonialDto.setCreatedAt(testimonialModel.getCreatedAt());
+        return testimonialDto;
     }
 }
