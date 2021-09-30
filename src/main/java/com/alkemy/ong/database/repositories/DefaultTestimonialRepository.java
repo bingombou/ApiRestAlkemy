@@ -92,5 +92,4 @@ public class DefaultTestimonialRepository implements TestimonialRepo {
         page.setCurrentPage(testimonials.getPageable().getPageNumber());
         return page;
     }
-
 }

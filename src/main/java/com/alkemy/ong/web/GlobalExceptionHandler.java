@@ -63,10 +63,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         body.put("details", request.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.FORBIDDEN);
     }
-    @ExceptionHandler ( value = {TestimonialDomainException.class})
+    @ExceptionHandler(value = {TestimonialDomainException.class})
     protected ResponseEntity <?> hangTestimonialException(Exception e){
         return ResponseEntity.notFound().build();
-
     }
 }
 
