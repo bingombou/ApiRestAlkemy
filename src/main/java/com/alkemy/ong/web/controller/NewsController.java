@@ -2,13 +2,19 @@ package com.alkemy.ong.web.controller;
 
 import com.alkemy.ong.domain.news.NewsModel;
 import com.alkemy.ong.domain.news.NewsService;
+import com.alkemy.ong.domain.utils.Page;
 import com.alkemy.ong.web.dto.NewsDto;
+import com.alkemy.ong.web.dto.PageDto;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
+
+import static com.alkemy.ong.commons.PageUtils.toPageDto;
 
 @RestController
 @RequestMapping(path = "/news")
@@ -21,12 +27,15 @@ public class NewsController {
     }
 
     @GetMapping
-    public ResponseEntity<List<NewsDto>> getNews() {
-        List<NewsDto> result = newsService.getNews().stream().map(m -> toDto(m)).collect(Collectors.toList());
-        return new ResponseEntity<List<NewsDto>>(result, HttpStatus.OK);
+    public ResponseEntity<PageDto> getNews(@RequestParam("page") int page) {
+        //List<NewsDto> result = newsService.getNews().stream().map(m -> toDto(m)).collect(Collectors.toList());
+        Page<NewsModel> news = newsService.getNews(page);
+
+        return new ResponseEntity<PageDto>(toPageDto(news, "news"), HttpStatus.OK);
     }
 
-
+    @ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
+    @PreAuthorize("hasAuthority('Admin')")
     @PostMapping
     public ResponseEntity<NewsDto> createNews(@Valid @RequestBody NewsDto news) {
         return new ResponseEntity<NewsDto>(this.toDto(newsService.createNews(toModel(news))), HttpStatus.CREATED);
@@ -36,7 +45,7 @@ public class NewsController {
     public ResponseEntity<NewsDto> updateNews(@Valid @RequestBody NewsModel news) {
         newsService.updateNews(news);
 
-        NewsDto newsDto = new NewsDto(news.getId(), news.getName(), news.getContent(),
+        NewsDto newsDto = new NewsDto(news.getId(),news.getIdCategory(), news.getName(), news.getContent(),
                 news.getImage(), news.getCreatedAt(), news.getUpdatedAt());
 
         return new ResponseEntity<NewsDto>(newsDto, HttpStatus.OK);
@@ -49,19 +58,20 @@ public class NewsController {
     }
 
     private NewsDto toDto(NewsModel news) {
-        return new NewsDto(news.getId(), news.getName(), news.getImage(), news.getContent(),
+        return new NewsDto(news.getId(), news.getIdCategory(),news.getName(), news.getImage(), news.getContent(),
                 news.isDeleted(), news.getCreatedAt(), news.getUpdatedAt());
     }
 
-    private NewsModel toModel(NewsDto mm) {
+    private NewsModel toModel(NewsDto dto) {
         NewsModel news = new NewsModel();
-        news.setId(mm.getId());
-        news.setName(mm.getName());
-        news.setContent(mm.getContent());
-        news.setImage(mm.getImage());
-        news.setDeleted(mm.isDeleted());
-        news.setCreatedAt(mm.getCreatedAt());
-        news.setUpdatedAt(mm.getUpdatedAt());
+        news.setId(dto.getId());
+        news.setIdCategory(dto.getIdCategory());
+        news.setName(dto.getName());
+        news.setContent(dto.getContent());
+        news.setImage(dto.getImage());
+        news.setDeleted(dto.isDeleted());
+        news.setCreatedAt(dto.getCreatedAt());
+        news.setUpdatedAt(dto.getUpdatedAt());
 
         return news;
     }

@@ -121,3 +121,15 @@ CREATE TABLE IF NOT EXISTS comments (id_comment INT NOT NULL AUTO_INCREMENT PRIM
                     updated_at timestamp  NOT NULL,
                     FOREIGN KEY (id_user) references users(id_user),
 					FOREIGN KEY (id_news) references news(id));
+
+CREATE TABLE IF NOT EXISTS news (
+    id int NOT NULL AUTO_INCREMENT,
+    id_category int NOT NULL,
+    name varchar(30) NOT NULL,
+    content text NOT NULL,
+    image varchar(30) NOT NULL,
+    deleted boolean NOT NULL default 0,
+    created_at timestamp NOT NULL default current_timestamp,
+    updated_at timestamp NOT NULL default current_timestamp,
+    CONSTRAINT NEWS_PK PRIMARY KEY (id),
+	FOREIGN KEY (id_category) references categories(id));

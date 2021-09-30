@@ -1,7 +1,7 @@
 package com.alkemy.ong.web;
 
-import com.alkemy.ong.database.entities.MemberEntity;
-import com.alkemy.ong.database.jparepositories.MemberJPARepository;
+import com.alkemy.ong.database.entities.NewsEntity;
+import com.alkemy.ong.database.jparepositories.NewsJPARepository;
 import com.alkemy.ong.web.dto.PageDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -23,18 +23,18 @@ import java.util.Optional;
 import static java.util.Collections.singletonList;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class MemberControllerTest {
+public class NewsControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private MemberJPARepository repository;
+    private NewsJPARepository repository;
 
     public ObjectWriter mapperConfig(){
         ObjectMapper mapper = new ObjectMapper();
@@ -44,63 +44,63 @@ public class MemberControllerTest {
     }
 
     @Test
-    public void getMembers() throws Exception {
+    public void getNews() throws Exception {
         Pageable pageable = PageRequest.of(0, 10);
-        Page<MemberEntity> paginatedMembers = new PageImpl(singletonList(buildMemberEntity()), pageable, 1L);
+        Page<NewsEntity> paginatedMembers = new PageImpl(singletonList(buildNewsEntity()), pageable, 1L);
 
         when(repository.findAll(pageable)).thenReturn(paginatedMembers);
-        mockMvc.perform(get("/members?page=0"))
+        mockMvc.perform(get("/news?page=0"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(mapperConfig().writeValueAsString(buildPageDto())));
     }
 
-    @Test
-    public void deleteMember() throws Exception {
-        MemberEntity member = buildMemberEntity();
-        when(repository.findById(1L)).thenReturn(java.util.Optional.of(new MemberEntity()));
-        mockMvc.perform(delete("/members/1"))
-                .andExpect(status().isNoContent());
-    }
 
     @Test
-    public void updateMember() throws Exception {
-        when(repository.findById(1L)).thenReturn(Optional.of(new MemberEntity()));
-        mockMvc.perform(put("/members/1")
+    public void createNew() throws Exception {
+        mockMvc.perform(post("/news")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapperConfig().writeValueAsString(buildMemberEntity())))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void createMember() throws Exception {
-        mockMvc.perform(post("/members")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapperConfig().writeValueAsString(buildMemberEntity())))
+                        .content(mapperConfig().writeValueAsString(buildNewsEntity())))
                 .andExpect(status().isCreated());
     }
 
-    private MemberEntity buildMemberEntity() {
-        MemberEntity member = new MemberEntity();
+    @Test
+    public void deleteNew() throws Exception {
+        NewsEntity news = buildNewsEntity();
+        when(repository.findById(1L)).thenReturn(java.util.Optional.of(new NewsEntity()));
+        mockMvc.perform(delete("/news/1"))
+                .andExpect(status().isNoContent());
+    }
 
-        member.setId(1L);
-        member.setName("Agustina");
-        member.setFacebookUrl("facebook.com");
-        member.setInstagramUrl("instagram.com");
-        member.setLinkedinUrl("linkedin.com");
-        member.setImage("image1.png");
-        member.setDescription("description");
+   @Test
+   public void updateNew() throws Exception {
+       when(repository.findById(1L)).thenReturn(Optional.of(new NewsEntity()));
+       mockMvc.perform(put("/news/1")
+                       .contentType(MediaType.APPLICATION_JSON)
+                       .content(mapperConfig().writeValueAsString(buildNewsEntity())))
+               .andExpect(status().isOk());
+    }
 
-        return member;
+
+    private NewsEntity buildNewsEntity(){
+
+        NewsEntity entity = new NewsEntity();
+
+        entity.setIdCategory(1);
+        entity.setContent("content");
+        entity.setId(1L);
+        entity.setImage("image.png");
+        entity.setName("String name");
+
+        return entity;
     }
 
     private PageDto buildPageDto(){
 
         PageDto pageDto = new PageDto();
-        pageDto.setContent(singletonList(buildMemberEntity()));
+        pageDto.setContent(singletonList(buildNewsEntity()));
         pageDto.setPreviousPage(null);
         pageDto.setNextPage(null);
 
         return pageDto;
-
     }
 }

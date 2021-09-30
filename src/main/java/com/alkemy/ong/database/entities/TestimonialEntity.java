@@ -30,12 +30,12 @@ public class TestimonialEntity {
     private int deleted;
 
     @Generated( value = GenerationTime.ALWAYS)
-    @Column (name = "created_at", length = 30, nullable = false, insertable = false,
+    @Column (name = "created_at", length = 30, nullable = false,
             columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
     @Generated( value = GenerationTime.ALWAYS)
-    @Column (name = "updated_at", length = 30, nullable = false, insertable = false,
+    @Column (name = "updated_at", length = 30, nullable = false,
             columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime updatedAt;
 

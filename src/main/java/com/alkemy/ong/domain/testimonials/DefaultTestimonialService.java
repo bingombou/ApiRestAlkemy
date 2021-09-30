@@ -18,9 +18,9 @@ public class DefaultTestimonialService implements TestimonialService{
     }
 
     @Override
-    public TestimonialModel update(TestimonialModel testimonialModel, Long testimonialId) {
+    public TestimonialModel update(TestimonialModel testimonialModel) {
         try {
-            return testimonialRepo.updateTestimonial(testimonialModel, testimonialId);
+            return testimonialRepo.updateTestimonial(testimonialModel);
         } catch (RuntimeException e){
             throw new TestimonialDomainException();
         }

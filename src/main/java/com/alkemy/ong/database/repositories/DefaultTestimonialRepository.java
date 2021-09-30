@@ -31,8 +31,8 @@ public class DefaultTestimonialRepository implements TestimonialRepo {
         testimonialModel.setImage(testimonialEntity.getImage());
         testimonialModel.setContent(testimonialEntity.getContent());
         testimonialModel.setDeleted(testimonialEntity.getDeleted());
-        testimonialModel.setCreatedAt(testimonialModel.getCreatedAt());
-        testimonialModel.setUpdatedAt(testimonialModel.getUpdatedAt());
+        testimonialModel.setCreatedAt(testimonialEntity.getCreatedAt());
+        testimonialModel.setUpdatedAt(testimonialEntity.getUpdatedAt());
         return testimonialModel;
     }
 
@@ -50,14 +50,13 @@ public class DefaultTestimonialRepository implements TestimonialRepo {
 
         testimonialEntity = testimonialJpaRepository.save(testimonialEntity);
 
-        testimonialModel = convertToModel(testimonialEntity);
         return testimonialModel;
     }
 
     @Override
-    public TestimonialModel updateTestimonial(TestimonialModel testimonialModel, Long testimonialId) {
+    public TestimonialModel updateTestimonial(TestimonialModel testimonialModel) {
 
-        Optional<TestimonialEntity> testimonial = testimonialJpaRepository.findById(testimonialId);
+        Optional<TestimonialEntity> testimonial = testimonialJpaRepository.findById(testimonialModel.getId());
 
         testimonial.get().setName(testimonialModel.getName());
         testimonial.get().setImage(testimonialModel.getImage());
@@ -93,5 +92,4 @@ public class DefaultTestimonialRepository implements TestimonialRepo {
         page.setCurrentPage(testimonials.getPageable().getPageNumber());
         return page;
     }
-
 }

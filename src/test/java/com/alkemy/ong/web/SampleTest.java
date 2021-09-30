@@ -41,5 +41,4 @@ public class SampleTest {
         sample.setDescription("Test Description");
         return sample;
     }
-
 }

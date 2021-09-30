@@ -6,7 +6,7 @@ public interface TestimonialService {
 
     TestimonialModel save(TestimonialModel testimonialModel);
 
-    TestimonialModel update(TestimonialModel testimonialModel, Long testimonialId);
+    TestimonialModel update(TestimonialModel testimonialModel);
 
     void deleteById(Long testimonialId);
 

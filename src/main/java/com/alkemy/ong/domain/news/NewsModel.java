@@ -7,13 +7,13 @@ import java.time.LocalDateTime;
 public class NewsModel {
 
     private Long id;
+    private int idCategory;
     private String name;
     private String image;
     private String content;
     private boolean deleted = Boolean.FALSE;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    //private String categoryId;
 
 }
 

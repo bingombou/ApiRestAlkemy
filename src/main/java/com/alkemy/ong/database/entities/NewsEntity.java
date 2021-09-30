@@ -18,15 +18,15 @@ public class NewsEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long id;
 
-    @NotEmpty(message = "Name field is required")
+    @Column(name = "id_category", nullable = false)
+    private int idCategory;
+
     @Column(name = "name", nullable = false)
     private String name;
 
-    @NotEmpty(message = "content field is required")
     @Column(name = "content",length = 250, nullable = false)
     private String content;
 
-    @NotEmpty(message = "Image field is required")
     @Column(name = "image", nullable = false)
     private String image;
 

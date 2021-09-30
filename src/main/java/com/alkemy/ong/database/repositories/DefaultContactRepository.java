@@ -28,6 +28,7 @@ public class DefaultContactRepository implements ContactRepo {
     public ContactModel toModel(ContactEntity contactEntity){
         ContactModel contactModel = new ContactModel();
 
+        contactModel.setId(contactEntity.getId());
         contactModel.setCreatedAt(contactEntity.getCreatedAt());
         contactModel.setDeleted(contactEntity.isDeleted());
         contactModel.setUpdatedAt(contactEntity.getUpdatedAt());
