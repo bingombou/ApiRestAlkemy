@@ -31,9 +31,9 @@ public class TestimonialController {
 
     @ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
     @PreAuthorize("hasAuthority('Admin')")
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody TestimonialModel testimonialModel, @PathVariable(value = "id") Long testimonialId){
-        return ResponseEntity.ok(testimonialService.update(testimonialModel, testimonialId));
+    @PutMapping("/{testimonialModel.getId()}")
+    public ResponseEntity<?> update(@RequestBody TestimonialModel testimonialModel){
+        return ResponseEntity.ok(testimonialService.update(testimonialModel));
     }
 
     @ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
