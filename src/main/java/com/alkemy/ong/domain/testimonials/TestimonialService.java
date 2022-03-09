@@ -11,5 +11,4 @@ public interface TestimonialService {
     void deleteById(Long testimonialId);
 
     Page<TestimonialModel> findAll(int page);
-
 }
